@@ -1,0 +1,48 @@
+version: '3.5'
+
+services:
+    nginx:
+        image: symfony-lab_nginx
+        build:
+            context: ./nginx
+        container_name: symfony-lab_nginx
+        depends_on:
+            - php
+        volumes:
+            - ../public:/app/public
+        ports:
+            - '8000:80'
+        networks:
+            - ubitransport_symfony-lab
+
+    php:
+        image: symfony-lab_php
+        build:
+            context: ./php
+        container_name: symfony-lab_php
+#        depends_on:
+#            - mysql
+        volumes:
+            - ../:/app
+        networks:
+            - ubitransport_symfony-lab
+        working_dir: /app
+
+#    mysql:
+#        image: symfony-lab_mysql
+#        build:
+#            context: ./mysql
+#        container_name: symfony-lab_mysql
+#        volumes:
+#            - ./mysql/data:/var/lib/mysql
+#        environment:
+#            MYSQL_ROOT_PASSWORD: root
+#            MYSQL_DATABASE: symfony-lab
+#            MYSQL_USER: user
+#            MYSQL_PASSWORD: ubitransport
+#        networks:
+#            - ubitransport_symfony-lab
+
+networks:
+    ubitransport_symfony-lab:
+        external: false

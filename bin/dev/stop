@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source "$(dirname "$(realpath "$0")")"/global-vars.inc.bash
+
+cd "${PROJECT_PATH}"/docker
+
+docker-compose down
