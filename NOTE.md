@@ -1,7 +1,10 @@
-<!-- INITIATION -->
+INITIATION
+
     1. Créer répository Github
     2. Créer le projet Github et de tickets
-<!-- INSTALLATION -->
+
+INSTALLATION
+
     **** POUR WINDOWS ****
         1. Installer WSL et config.
         2. Installer  Ubuntu WSL et config. ('sudo chmod 666 /var/run/docker.sock')
@@ -12,5 +15,7 @@
         1. Installer Home Brew 
         2. Dans Terminal: 'brew install coreutils'
         3. Installer Docker
-<!-- MCD -->
+
+MCD
+
     1. Extension Markdown Preview Mermaid Support
