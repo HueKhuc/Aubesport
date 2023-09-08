@@ -4,4 +4,4 @@ source "$(dirname "$(realpath "$0")")"/global-vars.inc.bash
 
 cd "${PROJECT_PATH}"/docker
 docker-compose up -d $@
-# docker exec -ti symfony-lab_php composer install
+# docker exec -i symfony-lab_php composer install

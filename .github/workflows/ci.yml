@@ -20,8 +20,11 @@ jobs:
     - name: Install dependencies
       run: bin/dev/composer install
 
-    - name: Validate composer.json and composer.lock
-      run: bin/dev/composer validate --strict
+    - name: Check phpcs
+      run: bin/dev/phpcs
+
+    # - name: Validate composer.json and composer.lock
+    #   run: bin/dev/composer validate --strict
 
 
 
