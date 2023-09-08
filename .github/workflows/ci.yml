@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Validate composer.json and composer.lock
+      working-directory: ./api
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+    # Docs: https://getcomposer.org/doc/articles/scripts.md
+    # - name: Install dependencies
+    #   working-directory: ./api
+    #   run: composer install --prefer-dist --no-progress
+
+    # - name: Docker Compose
+    #   working-directory: ./api
+    #   run: docker-compose up -d
+
+    # - name: Run tests
+    #   working-directory: ./api
+    #   run: make test-ci
+    
