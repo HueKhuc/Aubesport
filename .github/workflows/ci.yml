@@ -17,8 +17,13 @@ jobs:
     - name: Init container
       run: bin/dev/start
 
+    - name: Install dependencies
+      run: bin/dev/composer install
+
     - name: Validate composer.json and composer.lock
       run: bin/dev/composer validate --strict
+
+
 
     # - name: Cache Composer packages
     #   id: composer-cache
