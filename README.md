@@ -18,7 +18,8 @@ Par exemple :
 ```shell
 bin/dev/composer --version
 ```
-
+### Composer
+PHP Coding Standards Fixer
 ### Arrêter le projet
 ```shell
 bin/dev/stop

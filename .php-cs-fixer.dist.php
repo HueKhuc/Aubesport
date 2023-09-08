@@ -7,7 +7,10 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@Symfony' => true,
+        '@PSR12' => true,
+        'declare_strict_types' => true,
+        'strict_comparison' => true,
+        'strict_param' => true
     ])
     ->setFinder($finder)
 ;
