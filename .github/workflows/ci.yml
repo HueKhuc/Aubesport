@@ -21,7 +21,7 @@ jobs:
       run: bin/dev/composer install
 
     - name: Check phpcs
-      run: bin/dev/phpcs
+      run: bin/dev/phpcs fix
 
     # - name: Validate composer.json and composer.lock
     #   run: bin/dev/composer validate --strict
