@@ -23,6 +23,9 @@ jobs:
     - name: Check phpcs
       run: bin/dev/phpcs fix --dry-run
 
+    - name: Check phpstan
+      run: bin/dev/phpstan
+
     # - name: Validate composer.json and composer.lock
     #   run: bin/dev/composer validate --strict
 
