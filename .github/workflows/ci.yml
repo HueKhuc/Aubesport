@@ -21,7 +21,7 @@ jobs:
       run: bin/dev/composer install
 
     - name: Check phpcs
-      run: bin/dev/phpcs fix --dry-run
+      run: bin/dev/phpcs fix --dry-run --allow-risky=yes
 
     - name: Check phpstan
       run: bin/dev/phpstan analyse
