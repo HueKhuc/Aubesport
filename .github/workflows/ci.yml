@@ -27,8 +27,8 @@ jobs:
       run: bin/dev/phpstan analyse
 
     - name: Check phpunit
-      run: vendor/bin/phpunit
-      
+      run: bin/dev/phpunit
+
     # - name: Validate composer.json and composer.lock
     #   run: bin/dev/composer validate --strict
 

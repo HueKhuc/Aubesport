@@ -28,6 +28,10 @@ bin/dev/phpcs fix --allow-risky=yes
 ```shell
 bin/dev/phpstan analyse
 ```
+### PHPUnit
+```shell
+bin/dev/phpunit
+```
 
 ### Arrêter le projet
 ```shell
