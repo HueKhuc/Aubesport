@@ -1,14 +1,18 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App;
-class User 
+
+class User
 {
     private string $email;
 
-    public function getEmail(): string 
+    public function getEmail(): string
     {
         return $this->email;
     }
-    public function setEmail(string $email): self 
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
