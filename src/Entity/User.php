@@ -1,0 +1,147 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+
+#[Entity]
+class User
+{
+    #[Id]
+    #[Column(type: Types::STRING)]
+    private string $uuid;
+    #[Column(type: Types::STRING, unique: true)]
+    private string $email;
+    #[Column(type: Types::STRING)]
+    private ?string $pseudo;
+    #[Column(type: Types::STRING)]
+    private ?string $bio;
+    #[Column(type: Types::STRING)]
+    private ?string $firstName;
+    #[Column(type: Types::STRING)]
+    private ?string $lastName;
+    #[Column(type: Types::STRING)]
+    private ?string $gender;
+    #[Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $birthday;
+    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    private \DateTimeImmutable $createdAt;
+    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $modifiedAt;
+    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $deletedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->uuid = Uuid::v4()->toRfc4122();
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+    public function setPseudo(?string $pseudo): static
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+    public function setFirstName(?string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+    public function setLastName(?string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+    public function setGender(?string $gender): static
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+    public function getBirthday(): ?\DateTimeImmutable
+    {
+        return $this->birthday;
+    }
+    public function setBirthday(?\DateTimeImmutable $birthday): static
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getModifiedAt(): ?\DateTimeImmutable
+    {
+        return $this->modifiedAt;
+    }
+    public function updateModifiedAt(): static
+    {
+        $this->modifiedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function updateDeletedAt(): static
+    {
+        $this->deletedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+}

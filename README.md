@@ -22,7 +22,7 @@ bin/dev/composer --version
 ```
 ### PHP Coding Standards Fixer
 ```shell
-bin/dev/phpcs fix --allow-risky=yes
+bin/dev/phpcs-fix
 ```
 ### PHP Coding Standards Fixer
 ```shell
