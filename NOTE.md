@@ -19,3 +19,10 @@ INSTALLATION
 MCD
 
     1. Extension Markdown Preview Mermaid Support
+
+SETUP CI
+    Gitflow: master - develop - feature
+    1. CS Fixer
+    2. PHPStan
+    3. PHPUnit
+    

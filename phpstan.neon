@@ -1,0 +1,11 @@
+parameters:
+    scanDirectories:
+        - tests
+        - src
+    level: 9
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - src/Kernel.php
+        - tests/bootstrap.php

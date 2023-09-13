@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker exec -i symfony-lab_php vendor/bin/phpstan $@
