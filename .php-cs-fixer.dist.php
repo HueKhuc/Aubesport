@@ -10,7 +10,8 @@ return (new PhpCsFixer\Config())
         '@PSR12' => true,
         'declare_strict_types' => true,
         'strict_comparison' => true,
-        'strict_param' => true
+        'strict_param' => true,
+        'class_attributes_separation' => true
     ])
     ->setFinder($finder)
 ;
