@@ -37,3 +37,13 @@ bin/dev/phpunit
 ```shell
 bin/dev/stop
 ```
+
+#### Migration
+```shell
+bin/dev/console make:migration
+bin/dev/console doctrine:migrations:migrate
+```
+
+### ap the request data into the DTO object
+    - In Symfony 6.3, apply the #[MapRequestPayload] attribute in controller
+    - For the version < 6.3, use SerializerInterface

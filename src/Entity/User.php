@@ -18,23 +18,23 @@ class User
     private string $uuid;
     #[Column(type: Types::STRING, unique: true)]
     private string $email;
-    #[Column(type: Types::STRING)]
+    #[Column(type: Types::STRING, nullable:true)]
     private ?string $pseudo;
-    #[Column(type: Types::STRING)]
+    #[Column(type: Types::STRING, nullable:true)]
     private ?string $bio;
-    #[Column(type: Types::STRING)]
+    #[Column(type: Types::STRING, nullable:true)]
     private ?string $firstName;
-    #[Column(type: Types::STRING)]
+    #[Column(type: Types::STRING, nullable:true)]
     private ?string $lastName;
-    #[Column(type: Types::STRING)]
+    #[Column(type: Types::STRING, nullable:true)]
     private ?string $gender;
-    #[Column(type: Types::DATE_IMMUTABLE)]
+    #[Column(type: Types::DATE_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $birthday;
     #[Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
-    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $modifiedAt;
-    #[Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $deletedAt;
 
     public function __construct()
