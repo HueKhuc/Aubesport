@@ -19,6 +19,7 @@ class User
 
     #[Assert\Regex('/^\w+/')]
     public ?string $lastName = null;
+
     public ?string $pseudo = null;
 
     #[Assert\Regex('/^\w+/')]
