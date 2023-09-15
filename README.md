@@ -38,12 +38,16 @@ bin/dev/phpunit
 bin/dev/stop
 ```
 
-#### Migration
+### Doctrine migration 
+#### Creation du fichier migration pour mettre à jour la BDD
 ```shell
 bin/dev/console make:migration
+```
+#### Execute les migrations
+```shell
 bin/dev/console doctrine:migrations:migrate
 ```
 
-### ap the request data into the DTO object
+### Map the request data into the DTO object
     - In Symfony 6.3, apply the #[MapRequestPayload] attribute in controller
     - For the version < 6.3, use SerializerInterface
