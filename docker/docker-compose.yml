@@ -13,7 +13,7 @@ services:
         ports:
             - '8000:80'
         networks:
-            - ubitransport_symfony-lab
+            - aubesport_symfony-lab
 
     php:
         image: symfony-lab_php
@@ -25,24 +25,25 @@ services:
         volumes:
             - ../:/app
         networks:
-            - ubitransport_symfony-lab
+            - aubesport_symfony-lab
         working_dir: /app
 
-#    mysql:
-#        image: symfony-lab_mysql
-#        build:
-#            context: ./mysql
-#        container_name: symfony-lab_mysql
-#        volumes:
-#            - ./mysql/data:/var/lib/mysql
-#        environment:
-#            MYSQL_ROOT_PASSWORD: root
-#            MYSQL_DATABASE: symfony-lab
-#            MYSQL_USER: user
-#            MYSQL_PASSWORD: ubitransport
-#        networks:
-#            - ubitransport_symfony-lab
+    mysql:
+        image: symfony-lab_mysql
+        build:
+            context: ./mysql
+        container_name: symfony-lab_mysql
+        volumes:
+            - ./mysql/data:/var/lib/mysql
+        ports:
+            - '33060:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: symfony-lab
+            MYSQL_USER: user
+            MYSQL_PASSWORD: aubesport
+        networks:
+            - aubesport_symfony-lab
 
 networks:
-    ubitransport_symfony-lab:
-        external: false
+    aubesport_symfony-lab: ~
