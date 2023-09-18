@@ -26,9 +26,10 @@ class Address
     private int $streetNumber;
     #[Column(type: Types::INTEGER)]
     private int $postalCode;
+
     #[OneToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private User $user;
+    #[JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid')]
+    private User|null $user = null;
 
 
     public function __construct()
@@ -82,18 +83,4 @@ class Address
 
         return $this;
     }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-
 }
