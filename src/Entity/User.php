@@ -9,7 +9,8 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 #[Entity]
 class User
 {
@@ -46,6 +47,10 @@ class User
 
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $deletedAt;
+
+    #[OneToOne(targetEntity: Address::class)]
+    #[JoinColumn(name: 'adress_uuid', referencedColumnName: 'uuid')]
+    private Address|null $address = null;
 
     public function __construct()
     {

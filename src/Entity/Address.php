@@ -9,8 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\JoinColumn;
+
 
 #[Entity]
 class Address
@@ -30,10 +29,6 @@ class Address
 
     #[Column(type: Types::INTEGER)]
     private int $postalCode;
-
-    #[OneToOne(targetEntity: User::class)]
-    #[JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid')]
-    private User|null $user = null;
 
     public function __construct()
     {
