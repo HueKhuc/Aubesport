@@ -9,9 +9,11 @@ use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[Entity]
-class Adress
+class Address
 {
     #[Id]
     #[Column(type: Types::STRING)]
@@ -24,6 +26,9 @@ class Adress
     private int $streetNumber;
     #[Column(type: Types::INTEGER)]
     private int $postalCode;
+    #[OneToOne(targetEntity: User::class)]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private User $user;
 
 
     public function __construct()
@@ -77,5 +82,18 @@ class Adress
 
         return $this;
     }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 
 }
