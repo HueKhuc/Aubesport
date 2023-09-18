@@ -18,19 +18,22 @@ class Address
     #[Id]
     #[Column(type: Types::STRING)]
     private string $uuid;
+
     #[Column(type: Types::STRING)]
     private string $streetName;
+
     #[Column(type: Types::STRING)]
     private string $city;
+
     #[Column(type: Types::INTEGER)]
     private int $streetNumber;
+
     #[Column(type: Types::INTEGER)]
     private int $postalCode;
 
     #[OneToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid')]
     private User|null $user = null;
-
 
     public function __construct()
     {
@@ -46,26 +49,31 @@ class Address
     {
         return $this->streetName;
     }
+
     public function setStreetName(string $streetName): static
     {
         $this->streetName = $streetName;
 
         return $this;
     }
+
     public function getStreetNumber(): int
     {
         return $this->streetNumber;
     }
+
     public function setStreetNumber(int $streetNumber): static
     {
         $this->streetNumber = $streetNumber;
 
         return $this;
     }
+
     public function getCity(): string
     {
         return $this->city;
     }
+
     public function setCity(string $city): static
     {
         $this->city = $city;
@@ -77,6 +85,7 @@ class Address
     {
         return $this->postalCode;
     }
+
     public function setPostalCode(int $postalCode): static
     {
         $this->postalCode = $postalCode;
