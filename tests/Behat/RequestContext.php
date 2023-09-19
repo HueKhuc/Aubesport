@@ -41,8 +41,7 @@ class RequestContext implements Context
     /**
      * @Then I should receive a status code :statusCode
      */
-
-    public function iShouldReceiveStatusCode(int $statusCode)
+    public function iShouldReceiveStatusCode(int $statusCode): void
     {
         if ($this->response === null) {
             throw new \RuntimeException('No response received');
@@ -54,12 +53,11 @@ class RequestContext implements Context
     /**
      * @Given a user with email :email
      */
-
-     public function aUserWithEmail(string $email)
-     {
+    public function aUserWithEmail(string $email): void
+    {
         $user = new User();
         $user->setEmail($email);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-     }
+    }
 }
