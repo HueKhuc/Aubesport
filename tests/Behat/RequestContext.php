@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use Behat\Gherkin\Node\PyStringNode;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-/**
- * Defines application features from the specific context.
- */
 class RequestContext implements Context
 {
     public function __construct(
