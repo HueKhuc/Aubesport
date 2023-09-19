@@ -20,19 +20,23 @@ jobs:
     - name: Install dependencies
       run: bin/dev/composer install
 
-    - name: Check phpcs
+    - name: Database migration
+      run: bin/dev/console doctrine:migrations:migrate
+
+    - name: phpcs fixer
       run: bin/dev/phpcs-check
 
-    - name: Check phpstan
+    - name: phpstan
       run: bin/dev/phpstan analyse
 
-    - name: Check phpunit
+    - name: phpunit
       run: bin/dev/phpunit
+    
+    - name: behat
+      run: bin/dev/behat
 
     # - name: Validate composer.json and composer.lock
     #   run: bin/dev/composer validate --strict
-
-
 
     # - name: Cache Composer packages
     #   id: composer-cache

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+bin/dev/phpcs-fix
+bin/dev/phpstan
+bin/dev/phpunit
+bin/dev/behat
