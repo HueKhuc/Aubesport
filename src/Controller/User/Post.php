@@ -14,10 +14,32 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Attributes as OA;
 
 class Post extends AbstractController
 {
     #[Route('/api/users', methods: ['POST'])]
+    #[OA\RequestBody(
+        content: new OA\JsonContent(
+            type: 'object',
+            ref: new Model(type: UserDto::class)
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Returns the information of an user',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: UserDto::class))
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad Request'
+    )]
+    #[OA\Tag(name: 'User')]
     public function __invoke(
         Request $request,
         SerializerInterface $serializer,

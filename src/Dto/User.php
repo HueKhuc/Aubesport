@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Attributes as OA;
 
 class User
 {
@@ -23,6 +24,7 @@ class User
     public ?string $pseudo = null;
 
     #[Assert\Regex('/^\w+/')]
+    #[OA\Property(type: 'string', maxLength: 255, example: 'This is a bio.')]
     public ?string $bio = null;
 
     #[Assert\Choice(
