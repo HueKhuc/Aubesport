@@ -51,3 +51,6 @@ bin/dev/console doctrine:migrations:migrate
 ### Map the request data into the DTO object
     - In Symfony 6.3, apply the #[MapRequestPayload] attribute in controller
     - For the version < 6.3, use SerializerInterface
+
+### API Documentation
+    - http://localhost:8000/api/doc
