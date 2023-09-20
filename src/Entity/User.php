@@ -51,7 +51,7 @@ class User
 
     #[OneToOne(targetEntity: Address::class)]
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
-    private Address|null $address = null;
+    private ?Address $address = null;
 
     public function __construct()
     {
