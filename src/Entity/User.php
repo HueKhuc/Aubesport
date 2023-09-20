@@ -50,7 +50,7 @@ class User
     private ?\DateTimeImmutable $deletedAt;
 
     #[OneToOne(targetEntity: Address::class)]
-    #[JoinColumn(name: 'adress_uuid', referencedColumnName: 'uuid')]
+    #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
     private Address|null $address = null;
 
     public function __construct()
