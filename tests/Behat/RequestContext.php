@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
-use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -18,7 +16,6 @@ class RequestContext implements Context
     public function __construct(
         protected KernelInterface $kernel,
         protected ?Response $response = null,
-        protected EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -51,13 +48,10 @@ class RequestContext implements Context
     }
 
     /**
-     * @Given a user with email :email
+     * @When I send a get request to :uri of the API documentation's page
      */
-    public function aUserWithEmail(string $email): void
+    public function iAccessApiDoc(string $uri): void
     {
-        $user = new User();
-        $user->setEmail($email);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->response = $this->kernel->handle(Request::create($uri, 'GET'));
     }
 }
