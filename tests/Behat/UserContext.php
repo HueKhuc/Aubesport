@@ -31,6 +31,7 @@ class UserContext implements Context
     {
         $user = new User();
         $user->setEmail($email);
+        $user->setUuid('abcd123456');
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
