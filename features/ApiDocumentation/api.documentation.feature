@@ -1,4 +1,4 @@
-@api
+@apiDoc
 Feature:
     In order to read API documentation 
     As a developer 

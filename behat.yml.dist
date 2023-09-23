@@ -6,11 +6,11 @@ default:
                 - App\Tests\Behat\UserContext
             filters:
                 tags: '@users'
-        api:
+        api_doc:
             contexts:
                 - App\Tests\Behat\RequestContext
             filters:
-                tags: '@api'
+                tags: '@apiDoc'
 
 
     extensions:
