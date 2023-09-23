@@ -14,15 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
-class Get extends AbstractController
+class GetCollection extends AbstractController
 {
     #[Route('/api/users', methods: ['GET'])]
-    #[OA\RequestBody(
-        content: new OA\JsonContent(
-            type: 'object',
-            ref: new Model(type: UserDto::class)
-        )
-    )]
     #[OA\Response(
         response: 200,
         description: 'Returns the information of all user',
@@ -53,45 +47,5 @@ class Get extends AbstractController
         }
 
         return $this->json($userDtos, 200);
-    }
-
-    #[Route('/api/users/{uuid}', methods: ['GET'])]
-    #[OA\RequestBody(
-        content: new OA\JsonContent(
-            type: 'object',
-            ref: new Model(type: UserDto::class)
-        )
-    )]
-    #[OA\Response(
-        response: 200,
-        description: 'Returns the information of an user',
-        content: new OA\JsonContent(
-            type: 'array',
-            items: new OA\Items(ref: new Model(type: UserDto::class))
-        )
-    )]
-    #[OA\Response(
-        response: 404,
-        description: 'User not found'
-    )]
-    #[OA\Tag(name: 'User')]
-    public function index(
-        string $uuid,
-        EntityManagerInterface $entityManager,
-        SerializerInterface $serializer,
-    ): Response {
-        $user = $entityManager->getRepository(User::class)->find($uuid);
-
-        if ($user === null) {
-            return $this->json('User not found', 404);
-        }
-
-        $userDto = $serializer->deserialize(
-            $serializer->serialize($user, 'json'),
-            userDto::class,
-            'json'
-        );
-
-        return $this->json($userDto, 200);
     }
 }

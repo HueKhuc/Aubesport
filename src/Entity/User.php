@@ -66,13 +66,6 @@ class User
         return $this->uuid;
     }
 
-    public function setUuid(string $uuid): static
-    {
-        $this->uuid = $uuid;
-
-        return $this;
-    }
-
     public function getEmail(): string
     {
         return $this->email;
