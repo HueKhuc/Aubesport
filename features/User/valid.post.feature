@@ -1,3 +1,4 @@
+@users
 Feature:
     In order to use all features of the website
     As a player

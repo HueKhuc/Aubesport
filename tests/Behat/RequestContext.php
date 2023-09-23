@@ -48,7 +48,7 @@ class RequestContext implements Context
     }
 
     /**
-     * @When I send a get request to :uri of the API documentation's page
+     * @When I send a get request to :uri
      */
     public function iAccessApiDoc(string $uri): void
     {

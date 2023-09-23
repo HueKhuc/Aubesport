@@ -1,9 +1,16 @@
 default:
     suites:
-        default:
+        users:
             contexts:
                 - App\Tests\Behat\RequestContext
                 - App\Tests\Behat\UserContext
+            filters:
+                tags: '@users'
+        api:
+            contexts:
+                - App\Tests\Behat\RequestContext
+            filters:
+                tags: '@api'
 
 
     extensions:

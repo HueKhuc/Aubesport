@@ -25,7 +25,7 @@ class UserContext implements Context
     }
 
     /**
-     * @Given a user with email :email
+     * @Given there is an existant user with email :email
      */
     public function aUserWithEmail(string $email): void
     {

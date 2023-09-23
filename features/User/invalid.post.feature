@@ -1,3 +1,4 @@
+@users
 Feature:
     In order to avoid invalid information
     As a developer 
@@ -14,7 +15,7 @@ Feature:
         Then I should receive a status code 400
     
     Scenario: Players register with existing email
-        Given a user with email "myEmail@gmail.com"
+        Given there is an existant user with email "myEmail@gmail.com"
         When I send a post request to "/api/users" with
         """
             {
