@@ -11,11 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Attributes as OA;
 
 class Post extends AbstractController
@@ -28,7 +26,7 @@ class Post extends AbstractController
         )
     )]
     #[OA\Response(
-        response: 200,
+        response: 201,
         description: 'Returns the information of an user',
         content: new OA\JsonContent(
             type: 'array',
@@ -38,6 +36,10 @@ class Post extends AbstractController
     #[OA\Response(
         response: 400,
         description: 'Bad Request'
+    )]
+    #[OA\Response(
+        response: 409,
+        description: 'Conflict'
     )]
     #[OA\Tag(name: 'User')]
     public function __invoke(
@@ -63,9 +65,14 @@ class Post extends AbstractController
             'json'
         );
 
+        $errors = $validator->validate($user);
+        if (count($errors) > 0) {
+            return $this->json($errors, 409);
+        }
+
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->json($user);
+        return $this->json($user, 201);
     }
 }

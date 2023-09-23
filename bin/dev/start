@@ -3,4 +3,4 @@
 source "$(dirname "$(realpath "$0")")"/global-vars.inc.bash
 
 cd "${PROJECT_PATH}"/docker
-docker-compose up -d $@
+docker compose up -d $@

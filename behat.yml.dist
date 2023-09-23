@@ -1,0 +1,18 @@
+default:
+    suites:
+        users:
+            contexts:
+                - App\Tests\Behat\RequestContext
+                - App\Tests\Behat\UserContext
+            filters:
+                tags: '@users'
+        api_doc:
+            contexts:
+                - App\Tests\Behat\RequestContext
+            filters:
+                tags: '@apiDoc'
+
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: tests/bootstrap.php

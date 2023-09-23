@@ -32,7 +32,14 @@ bin/dev/phpstan analyse
 ```shell
 bin/dev/phpunit
 ```
-
+### Behat
+```shell
+bin/dev/behat
+```
+### Execute tous les tests
+```shell
+bin/dev/test-ci
+```
 ### Arrêter le projet
 ```shell
 bin/dev/stop
