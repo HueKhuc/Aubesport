@@ -24,7 +24,7 @@ jobs:
       run: bin/dev/console --env=test doctrine:database:create
 
     - name: Database migration
-      run: bin/dev/migrate --env=test
+      run: bin/dev/console --env=test doctrine:migrations:migrate --no-interaction
 
     - name: phpcs fixer
       run: bin/dev/phpcs-check
