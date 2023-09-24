@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-bin/dev/console --env=test doctrine:database:drop --force
-bin/dev/console --env=test doctrine:database:create
-bin/dev/console --env=test doctrine:migrations:migrate --no-interaction
