@@ -22,6 +22,8 @@ jobs:
 
     - name: Database migration
       run: bin/dev/console --env=test doctrine:migrations:migrate --no-interaction
+      env:
+        DATABASE_URL: mysql://root:root@symfony-lab_mysql:3306/symfony-lab?serverVersion=8.0.32&charset=utf8mb4
 
     - name: phpcs fixer
       run: bin/dev/phpcs-check
