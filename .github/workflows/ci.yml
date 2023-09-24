@@ -21,9 +21,7 @@ jobs:
       run: bin/dev/composer install
 
     - name: Database migration
-      run: bin/dev/console --env=test doctrine:migrations:migrate --no-interaction
-      env:
-        DATABASE_URL: mysql://root:root@symfony-lab_mysql:3306/symfony-lab?serverVersion=8.0.32&charset=utf8mb4
+      run: bin/dev/console --env=env.test doctrine:migrations:migrate --no-interaction
 
     - name: phpcs fixer
       run: bin/dev/phpcs-check
