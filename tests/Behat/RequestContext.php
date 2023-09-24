@@ -30,7 +30,9 @@ class RequestContext implements Context
             [],
             [],
             [],
-            [],
+            [
+                'CONTENT_TYPE' => 'application/json'
+            ],
             $string->getRaw()
         ));
     }
@@ -43,15 +45,28 @@ class RequestContext implements Context
         if ($this->response === null) {
             throw new \RuntimeException('No response received');
         }
-
         TestCase::assertSame($statusCode, $this->response->getStatusCode());
     }
 
     /**
      * @When I send a get request to :uri
      */
-    public function iAccessApiDoc(string $uri): void
+    public function iSendAGetRequest(string $uri): void
     {
         $this->response = $this->kernel->handle(Request::create($uri, 'GET'));
+    }
+
+    /**
+     * @Then the node :key of the reponse should be :expectedValue
+     */
+    public function theKeyIsExpectedValue(string $key, string|int|null $expectedValue): void
+    {
+        TestCase::assertNotNull($this->response);
+        TestCase::assertIsString($this->response->getContent());
+
+        $reponse = json_decode(($this->response->getContent()), true);
+
+        TestCase::assertIsArray($reponse);
+        TestCase::assertSame($reponse[$key], $expectedValue);
     }
 }

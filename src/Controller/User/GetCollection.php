@@ -6,13 +6,15 @@ namespace App\Controller\User;
 
 use App\Entity\User;
 use App\Dto\User as userDto;
+use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 
 class GetCollection extends AbstractController
 {
@@ -29,12 +31,27 @@ class GetCollection extends AbstractController
     public function __invoke(
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
+        Request $request,
+        #[MapQueryParameter]
+        int $elementsPerPage = 10,
+        #[MapQueryParameter]
+        int $currentPage = 1
     ): Response {
-        $users = $entityManager->getRepository(User::class)->findAll();
-
-        if (count($users) === 0) {
-            return $this->json('No user', 200);
+        if ($elementsPerPage > 50) {
+            $elementsPerPage = 10;
         }
+
+        $numberOfUsers = $entityManager->getRepository(User::class)->count([]);
+        $totalOfPages = (int) ceil($numberOfUsers / $elementsPerPage);
+
+        $offset = $elementsPerPage * ($currentPage - 1);
+
+        $users = $entityManager->getRepository(User::class)->findBy(
+            [],
+            ['createdAt' => 'DESC'],
+            $elementsPerPage,
+            $offset
+        );
 
         $userDtos = [];
         foreach($users as $user) {
@@ -46,6 +63,17 @@ class GetCollection extends AbstractController
             $userDtos[] = $userDto;
         }
 
-        return $this->json($userDtos, 200);
+        $nextPage = ($currentPage < $totalOfPages) ? $currentPage + 1 : null;
+
+        $previousPage = ($currentPage > 1) ? $currentPage - 1 : null;
+
+        return $this->json([
+            'elements' => $userDtos,
+            'totalOfPages' => $totalOfPages,
+            'currentPage' => $currentPage,
+            'elementsPerPage' => $elementsPerPage,
+            'nextPage' => $nextPage,
+            'previousPage' => $previousPage
+        ]);
     }
 }

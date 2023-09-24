@@ -6,15 +6,16 @@ namespace App\Controller\User;
 
 use App\Entity\User;
 use App\Dto\User as UserDto;
+use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 
 class Post extends AbstractController
 {
@@ -34,8 +35,8 @@ class Post extends AbstractController
         )
     )]
     #[OA\Response(
-        response: 400,
-        description: 'Bad Request'
+        response: 422,
+        description: 'Validation errors'
     )]
     #[OA\Response(
         response: 409,
@@ -46,19 +47,10 @@ class Post extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        #[MapRequestPayload]
+        UserDto $userDto
     ): Response {
-        $userDto = $serializer->deserialize(
-            $request->getContent(),
-            UserDto::class,
-            'json'
-        );
-
-        $errors = $validator->validate($userDto);
-        if (count($errors) > 0) {
-            return $this->json($errors, 400);
-        }
-
         $user = $serializer->deserialize(
             $serializer->serialize($userDto, 'json'),
             User::class,

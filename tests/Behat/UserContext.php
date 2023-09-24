@@ -34,4 +34,17 @@ class UserContext implements Context
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
+
+    /**
+     * @Given there are :numberOfUsers users in the database
+     */
+    public function thereAreUsersInTheDatabase(int $numberOfUsers): void
+    {
+        for ($i = 1; $i <= $numberOfUsers; $i++) {
+            $user = new User();
+            $user->setEmail('email'.$i.'@gmail.com');
+            $this->entityManager->persist($user);
+        }
+        $this->entityManager->flush();
+    }
 }
