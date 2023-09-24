@@ -12,7 +12,7 @@ Feature:
                 "pseudo": "BunBoHue"
             }
         """
-        Then I should receive a status code 400
+        Then I should receive a status code 422
     
     Scenario: Players register with existing email
         Given there is an existant user with email "myEmail@gmail.com"

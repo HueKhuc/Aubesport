@@ -4,6 +4,8 @@ default:
             contexts:
                 - App\Tests\Behat\RequestContext
                 - App\Tests\Behat\UserContext
+                - App\Tests\Behat\TransformationContext
+
             filters:
                 tags: '@users'
         api_doc:
