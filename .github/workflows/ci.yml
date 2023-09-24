@@ -19,9 +19,12 @@ jobs:
 
     - name: Install dependencies
       run: bin/dev/composer install
+    
+    - name: Create database
+      run: bin/dev/console doctrine:database:create --env=test
 
     - name: Database migration
-      run: bin/dev/console doctrine:migrations:migrate --no-interaction
+      run: bin/dev/console doctrine:migrations:migrate --no-interaction --env=test
 
     - name: phpcs fixer
       run: bin/dev/phpcs-check
