@@ -17,10 +17,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GetCollection extends AbstractController
 {
+    private const MAX_ELEMENTS_PER_PAGE = 50;
+
+    private const DEFAUT_ELEMENTS_PER_PAGE = 10;
+
     #[Route('/api/users', methods: ['GET'])]
     #[OA\Response(
         response: 200,
-        description: 'Returns the information of all user',
+        description: 'Returns the information of all users',
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: User::class))
@@ -32,15 +36,14 @@ class GetCollection extends AbstractController
         SerializerInterface $serializer,
         Request $request,
         #[MapQueryParameter]
-        int $elementsPerPage = 10,
+        int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
         #[MapQueryParameter]
         int $currentPage = 1
     ): Response {
-        if ($elementsPerPage > 50) {
-            $elementsPerPage = 10;
-        }
+        $elementsPerPage = ($elementsPerPage > self::MAX_ELEMENTS_PER_PAGE) ? self::DEFAUT_ELEMENTS_PER_PAGE : $elementsPerPage;
 
         $numberOfUsers = $entityManager->getRepository(User::class)->count([]);
+
         $totalOfPages = (int) ceil($numberOfUsers / $elementsPerPage);
 
         $offset = $elementsPerPage * ($currentPage - 1);

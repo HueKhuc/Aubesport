@@ -45,6 +45,7 @@ class UserContext implements Context
             $user->setEmail('email'.$i.'@gmail.com');
             $this->entityManager->persist($user);
         }
+
         $this->entityManager->flush();
     }
 }
