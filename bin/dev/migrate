@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-bin/dev/console doctrine:database:create $@
 bin/dev/console doctrine:migrations:migrate --no-interaction $@
