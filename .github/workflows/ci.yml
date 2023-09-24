@@ -21,7 +21,9 @@ jobs:
       run: bin/dev/composer install
 
     - name: Database migration
-      run: bin/dev/console --env=env.test doctrine:migrations:migrate --no-interaction
+      run: 
+        bin/dev/console --env=test doctrine:database:create
+        bin/dev/console --env=test doctrine:migrations:migrate --no-interaction
 
     - name: phpcs fixer
       run: bin/dev/phpcs-check
