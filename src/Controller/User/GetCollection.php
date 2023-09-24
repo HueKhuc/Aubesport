@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\User;
 
 use App\Entity\User;
-use App\Dto\User as userDto;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -24,7 +23,7 @@ class GetCollection extends AbstractController
         description: 'Returns the information of all user',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: UserDto::class))
+            items: new OA\Items(ref: new Model(type: User::class))
         )
     )]
     #[OA\Tag(name: 'User')]
@@ -53,22 +52,12 @@ class GetCollection extends AbstractController
             $offset
         );
 
-        $userDtos = [];
-        foreach($users as $user) {
-            $userDto = $serializer->deserialize(
-                $serializer->serialize($user, 'json'),
-                userDto::class,
-                'json'
-            );
-            $userDtos[] = $userDto;
-        }
-
         $nextPage = ($currentPage < $totalOfPages) ? $currentPage + 1 : null;
 
         $previousPage = ($currentPage > 1) ? $currentPage - 1 : null;
 
         return $this->json([
-            'elements' => $userDtos,
+            'elements' => $users,
             'totalOfPages' => $totalOfPages,
             'currentPage' => $currentPage,
             'elementsPerPage' => $elementsPerPage,
