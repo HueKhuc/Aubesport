@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\User;
 
 use App\Entity\User;
-use App\Dto\UserPost as UserDto;
+use App\Dto\UserPatch;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -17,54 +17,59 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class Post extends AbstractController
+class Patch extends AbstractController
 {
-    #[Route('/api/users', methods: ['POST'])]
+    #[Route('/api/users/{uuid}', methods: ['PATCH'])]
     #[OA\RequestBody(
         content: new OA\JsonContent(
             type: 'object',
-            ref: new Model(type: UserDto::class)
+            ref: new Model(type: UserPatch::class)
         )
     )]
     #[OA\Response(
-        response: 201,
-        description: 'Returns the information of an user',
+        response: 200,
+        description: 'Returns the user\'s information after modification',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: UserDto::class))
+            items: new OA\Items(ref: new Model(type: User::class))
         )
     )]
     #[OA\Response(
         response: 422,
         description: 'Validation errors'
     )]
-    #[OA\Response(
-        response: 409,
-        description: 'Conflict'
-    )]
+
     #[OA\Tag(name: 'User')]
     public function __invoke(
+        string $uuid,
         Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         #[MapRequestPayload]
-        UserDto $userDto
+        UserPatch $userDto
     ): Response {
-        $user = $serializer->deserialize(
-            $serializer->serialize($userDto, 'json'),
-            User::class,
-            'json'
-        );
+        $user = $entityManager->getRepository(User::class)->find($uuid);
 
-        $errors = $validator->validate($user);
-        if (count($errors) > 0) {
-            return $this->json($errors, 409);
+        if ($user !== null) {
+            $userDtoReflectionClass = new \ReflectionClass($userDto);
+            $userEntityReflectionClass = new \ReflectionClass($user);
+
+            foreach ($userDtoReflectionClass->getProperties() as $userDtoProperty) {
+                $propertyName = $userDtoProperty->getName();
+                $propertyValue = $userDtoProperty->getValue($userDto);
+
+                if ($propertyValue !== null) {
+                    $userEntityProperty = $userEntityReflectionClass->getProperty($propertyName);
+                    $userEntityProperty->setValue($user, $propertyValue);
+                }
+            }
+
+            $user->updateModifiedAt();
         }
 
-        $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->json($user, 201);
+        return $this->json($user, 200);
     }
 }

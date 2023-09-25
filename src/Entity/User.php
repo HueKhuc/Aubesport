@@ -25,19 +25,19 @@ class User
     private string $email;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $pseudo;
+    private ?string $pseudo = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $bio;
+    private ?string $bio = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $firstName;
+    private ?string $firstName = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $lastName;
+    private ?string $lastName = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $gender;
+    private ?string $gender = null;
 
     #[Column(type: Types::DATE_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $birthday;
@@ -64,6 +64,13 @@ class User
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function setUuid(string $uuid): static
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     public function getEmail(): string

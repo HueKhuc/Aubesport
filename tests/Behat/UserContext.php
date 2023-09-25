@@ -25,12 +25,13 @@ class UserContext implements Context
     }
 
     /**
-     * @Given there is an existant user with email :email
+     * @Given there is an existant user with email :email and uuid :uuid
      */
-    public function aUserWithEmail(string $email): void
+    public function aUserWithEmail(string $email, string $uuid): void
     {
         $user = new User();
         $user->setEmail($email);
+        $user->setUuid($uuid);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
