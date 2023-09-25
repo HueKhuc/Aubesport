@@ -51,23 +51,24 @@ class Patch extends AbstractController
     ): Response {
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
-        if ($user !== null) {
-            $userDtoReflectionClass = new \ReflectionClass($userDto);
-            $userEntityReflectionClass = new \ReflectionClass($user);
+        if ($user === null) {
+            return $this->json($user, 400);
+        }
+        
+        $userDtoReflectionClass = new \ReflectionClass($userDto);
+        $userEntityReflectionClass = new \ReflectionClass($user);
 
-            foreach ($userDtoReflectionClass->getProperties() as $userDtoProperty) {
-                $propertyName = $userDtoProperty->getName();
-                $propertyValue = $userDtoProperty->getValue($userDto);
+        foreach ($userDtoReflectionClass->getProperties() as $userDtoProperty) {
+            $propertyName = $userDtoProperty->getName();
+            $propertyValue = $userDtoProperty->getValue($userDto);
 
-                if ($propertyValue !== null) {
-                    $userEntityProperty = $userEntityReflectionClass->getProperty($propertyName);
-                    $userEntityProperty->setValue($user, $propertyValue);
-                }
+            if ($propertyValue !== null) {
+                $userEntityProperty = $userEntityReflectionClass->getProperty($propertyName);
+                $userEntityProperty->setValue($user, $propertyValue);
             }
-
-            $user->updateModifiedAt();
         }
 
+        $user->updateModifiedAt();
         $entityManager->flush();
 
         return $this->json($user, 200);
