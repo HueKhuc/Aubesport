@@ -54,7 +54,7 @@ class Patch extends AbstractController
         if ($user === null) {
             return $this->json($user, 400);
         }
-        
+
         $userDtoReflectionClass = new \ReflectionClass($userDto);
         $userEntityReflectionClass = new \ReflectionClass($user);
 
