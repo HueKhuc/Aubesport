@@ -87,4 +87,18 @@ class RequestContext implements Context
         TestCase::assertIsArray($reponse);
         TestCase::assertSame($reponse[$key], $expectedValue);
     }
+
+    /**
+     * @Then the node :key of the reponse should not be null
+     */
+    public function theNodeIsNotNull(string $key): void
+    {
+        TestCase::assertNotNull($this->response);
+        TestCase::assertIsString($this->response->getContent());
+
+        $reponse = json_decode(($this->response->getContent()), true);
+
+        TestCase::assertIsArray($reponse);
+        TestCase::assertNotNull($reponse[$key]);
+    }
 }

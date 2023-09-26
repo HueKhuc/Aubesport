@@ -49,7 +49,7 @@ class Patch extends AbstractController
         ValidatorInterface $validator,
         #[MapRequestPayload]
         UserPatch $userDto,
-        UpdateObject $service
+        UpdateObject $updateObject
     ): Response {
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
@@ -57,7 +57,7 @@ class Patch extends AbstractController
             return $this->json($user, 400);
         }
 
-        $service($user, $userDto);
+        $updateObject($user, $userDto);
         $user->updateModifiedAt();
 
         $entityManager->flush();

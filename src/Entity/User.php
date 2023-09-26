@@ -66,13 +66,6 @@ class User
         return $this->uuid;
     }
 
-    public function setUuid(string $uuid): static
-    {
-        $this->uuid = $uuid;
-
-        return $this;
-    }
-
     public function getEmail(): string
     {
         return $this->email;
@@ -184,5 +177,10 @@ class User
         $this->deletedAt = new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function __set(string $property, mixed $value): void
+    {
+        $this->$property = $value; /** @phpstan-ignore-line */
     }
 }
