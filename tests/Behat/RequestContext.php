@@ -75,6 +75,14 @@ class RequestContext implements Context
     }
 
     /**
+     * @When I send a delete request to :uri
+     */
+    public function iSendADeleteRequest(string $uri): void
+    {
+        $this->response = $this->kernel->handle(Request::create($uri, 'DELETE'));
+    }
+
+    /**
      * @Then the node :key of the reponse should be :expectedValue
      */
     public function theKeyIsExpectedValue(string $key, string|int|null $expectedValue): void
