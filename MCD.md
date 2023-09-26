@@ -44,7 +44,7 @@ erDiagram
         string uuid PK
         string streetNumber
         string streetName
-        int postalCode
+        string postalCode
         string city
     }
 

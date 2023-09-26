@@ -4,6 +4,7 @@ Feature:
     As a developer 
     I want the application validate infos before saving into the database
 
+    @test
     Scenario: Players register with invalid gender
         Given there is an existant user with email "myEmail@gmail.com" and uuid "a245f890-accf-4295-a00a-522732682fdc"
         When I send a patch request to "/api/users/a245f890-accf-4295-a00a-522732682fdc" with
@@ -13,15 +14,16 @@ Feature:
             }
         """
         Then I should receive a status code 422
-   
-    Scenario: Players register with invalid birthday
+        And the node "detail" of the reponse should be "gender: Choose a valid gender."
+
+    @test
+    Scenario: Players register with invalid firstName
         Given there is an existant user with email "myEmail@gmail.com" and uuid "a245f890-accf-4295-a00a-522732682fdc"
         When I send a patch request to "/api/users/a245f890-accf-4295-a00a-522732682fdc" with
         """
             {
-                "birthday": "2023-09-25"
+                "firstName": "@@@@"
             }
         """
         Then I should receive a status code 422
-    
- 
+        And the node "detail" of the reponse should be "firstName: This value is not valid."

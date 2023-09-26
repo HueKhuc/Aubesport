@@ -6,6 +6,7 @@ namespace App\Controller\User;
 
 use App\Entity\User;
 use App\Dto\UserPatch;
+use App\ObjectManipulation\UpdateObject;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -47,7 +48,8 @@ class Patch extends AbstractController
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         #[MapRequestPayload]
-        UserPatch $userDto
+        UserPatch $userDto,
+        UpdateObject $service
     ): Response {
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
@@ -55,20 +57,9 @@ class Patch extends AbstractController
             return $this->json($user, 400);
         }
 
-        $userDtoReflectionClass = new \ReflectionClass($userDto);
-        $userEntityReflectionClass = new \ReflectionClass($user);
-
-        foreach ($userDtoReflectionClass->getProperties() as $userDtoProperty) {
-            $propertyName = $userDtoProperty->getName();
-            $propertyValue = $userDtoProperty->getValue($userDto);
-
-            if ($propertyValue !== null) {
-                $userEntityProperty = $userEntityReflectionClass->getProperty($propertyName);
-                $userEntityProperty->setValue($user, $propertyValue);
-            }
-        }
-
+        $service($user, $userDto);
         $user->updateModifiedAt();
+
         $entityManager->flush();
 
         return $this->json($user, 200);
