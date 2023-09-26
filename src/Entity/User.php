@@ -55,10 +55,10 @@ class User
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
     private ?Address $address = null;
 
-    public function __construct()
+    public function __construct(Uuid $uuid = null)
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->uuid = Uuid::v4()->toRfc4122();
+        $this->uuid = $uuid instanceof Uuid ? $uuid->toRfc4122() : Uuid::v4()->toRfc4122();
     }
 
     public function getUuid(): string
@@ -177,10 +177,5 @@ class User
         $this->deletedAt = new \DateTimeImmutable();
 
         return $this;
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        $this->$property = $value; /** @phpstan-ignore-line */
     }
 }
