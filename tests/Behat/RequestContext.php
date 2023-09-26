@@ -57,6 +57,24 @@ class RequestContext implements Context
     }
 
     /**
+     * @When I send a patch request to :uri with
+     */
+    public function iSendAPatchRequest(string $uri, PyStringNode $string): void
+    {
+        $this->response = $this->kernel->handle(Request::create(
+            $uri,
+            Request::METHOD_PATCH,
+            [],
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json'
+            ],
+            $string->getRaw()
+        ));
+    }
+
+    /**
      * @Then the node :key of the reponse should be :expectedValue
      */
     public function theKeyIsExpectedValue(string $key, string|int|null $expectedValue): void
@@ -68,5 +86,19 @@ class RequestContext implements Context
 
         TestCase::assertIsArray($reponse);
         TestCase::assertSame($reponse[$key], $expectedValue);
+    }
+
+    /**
+     * @Then the node :key of the reponse should not be null
+     */
+    public function theNodeIsNotNull(string $key): void
+    {
+        TestCase::assertNotNull($this->response);
+        TestCase::assertIsString($this->response->getContent());
+
+        $reponse = json_decode(($this->response->getContent()), true);
+
+        TestCase::assertIsArray($reponse);
+        TestCase::assertNotNull($reponse[$key]);
     }
 }

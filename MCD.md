@@ -3,27 +3,31 @@
 title: MCD du site AubEsport
 ---
 erDiagram
-    USER ||--o{ ADDRESS : have
-    
-    USER }o--o{ ROLE : have
-
-    ROLE {
-        string uuid PK
-        string label "admin, user, ..."
-    }
-
     USER {
         string uuid PK
         string pseudo
         string bio
-        string name
+        string firstName
+        string lastName
         string email UK "type email, unique"
-        string favouriteGame
         date birthday
-        string gender "feminin, masculin et autre"
+        string gender "autre, femme, homme"
         date modifiedAt
         date createdAt
         date deletedAt
+    }
+
+    USER }o--o{ ROLE : have
+    ROLE {
+        string uuid PK
+        string label "admin, non-admin (user, visiteur, participant1, participant2)"
+    }
+
+
+    USER |o--o{ FAVORITE_GAMES : like
+    FAVORITE_GAMES {
+        string uuid PK
+        string name
     }
     
     USER ||--o{ AUTHENTICATION : have
@@ -34,11 +38,13 @@ erDiagram
         date createdAt
     }
 
+    USER ||--o{ ADDRESS : have
+    
     ADDRESS {
         string uuid PK
-        int number
-        string line1
-        int postalCode
+        string streetNumber
+        string streetName
+        string postalCode
         string city
     }
 
@@ -53,13 +59,11 @@ erDiagram
     TOURNAMENT {
         string uuid PK
         string name
-        date date
-        int score "????"
+        date startingDate
+        date endingDate
+        bool hasPaid   
     }
 
-
-
-    
 ```
 
 <!-- RELATIONSHIP

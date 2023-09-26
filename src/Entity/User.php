@@ -25,19 +25,19 @@ class User
     private string $email;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $pseudo;
+    private ?string $pseudo = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $bio;
+    private ?string $bio = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $firstName;
+    private ?string $firstName = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $lastName;
+    private ?string $lastName = null;
 
     #[Column(type: Types::STRING, nullable:true)]
-    private ?string $gender;
+    private ?string $gender = null;
 
     #[Column(type: Types::DATE_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $birthday;
@@ -55,10 +55,10 @@ class User
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
     private ?Address $address = null;
 
-    public function __construct()
+    public function __construct(Uuid $uuid = null)
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->uuid = Uuid::v4()->toRfc4122();
+        $this->uuid = $uuid instanceof Uuid ? $uuid->toRfc4122() : Uuid::v4()->toRfc4122();
     }
 
     public function getUuid(): string

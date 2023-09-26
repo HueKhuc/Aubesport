@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use App\Entity\User;
+use Symfony\Component\Uid\Uuid;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
@@ -25,12 +26,13 @@ class UserContext implements Context
     }
 
     /**
-     * @Given there is an existant user with email :email
+     * @Given there is an existant user with email :email and uuid :uuid
      */
-    public function aUserWithEmail(string $email): void
+    public function aUserWithEmail(string $email, string $uuid): void
     {
-        $user = new User();
+        $user = new User(Uuid::fromString($uuid));
         $user->setEmail($email);
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

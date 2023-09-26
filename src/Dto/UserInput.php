@@ -7,14 +7,8 @@ namespace App\Dto;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Attributes as OA;
 
-class User
+class UserInput
 {
-    #[Assert\NotNull]
-    #[Assert\Email(
-        message: 'The email {{ value }} is not a valid email.',
-    )]
-    public string $email;
-
     #[Assert\Regex('/^\w+/')]
     public ?string $firstName = null;
 
