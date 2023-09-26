@@ -19,8 +19,16 @@ class Delete extends AbstractController
 {
     #[Route('/api/users/{uuid}', methods: ['DELETE'])]
     #[OA\Response(
-        response: 200,
+        response: 204,
         description: 'Returns the user\'s information after being deleted',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: User::class))
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'User not found',
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: User::class))
