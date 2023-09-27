@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Address;
 
 use App\Entity\Address;
+use App\Entity\User;
 use App\Dto\Address as addressDto;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +40,7 @@ class Post extends AbstractController
     )]
     #[OA\Tag(name: 'Address')]
     public function __invoke(
+        string $uuid,
         Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
@@ -60,8 +62,14 @@ class Post extends AbstractController
             Address::class,
             'json'
         );
+        $user = $entityManager->getRepository(User::class)->find($uuid);
+        if($user !== null) {
+            $user->setAddress($address);
+            $entityManager->persist($user);
+        }
 
         $entityManager->persist($address);
+
         $entityManager->flush();
 
         return $this->json($address);

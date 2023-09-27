@@ -23,11 +23,11 @@ class Address
     #[Column(type: Types::STRING)]
     private string $city;
 
-    #[Column(type: Types::INTEGER)]
-    private int $streetNumber;
+    #[Column(type: Types::STRING)]
+    private string $streetNumber;
 
-    #[Column(type: Types::INTEGER)]
-    private int $postalCode;
+    #[Column(type: Types::STRING)]
+    private string $postalCode;
 
     public function __construct()
     {
@@ -75,7 +75,7 @@ class Address
         return $this;
     }
 
-    public function getPostalCode(): int
+    public function getPostalCode(): string
     {
         return $this->postalCode;
     }
