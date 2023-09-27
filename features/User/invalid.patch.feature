@@ -13,7 +13,7 @@ Feature:
             }
         """
         Then I should receive a status code 422
-        And the node "detail" of the reponse should be "gender: Choose a valid gender."
+        And the node "detail" of the response should be "gender: Choose a valid gender."
 
     Scenario: Players register with invalid firstName
         Given there is an existant user with email "myEmail@gmail.com" and uuid "a245f890-accf-4295-a00a-522732682fdc"
@@ -24,4 +24,4 @@ Feature:
             }
         """
         Then I should receive a status code 422
-        And the node "detail" of the reponse should be "firstName: This value is not valid."
+        And the node "detail" of the response should be "firstName: This value is not valid."
