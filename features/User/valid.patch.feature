@@ -15,3 +15,4 @@ Feature:
         Then I should receive a status code 200
         And the node "pseudo" of the response should be "BunBoHue"
         And the node "modifiedAt" of the response should not be null
+        And the field "pseudo" in the database of the user having the uuid "c2ef4afb-fc3a-487d-818a-75af0a7e6816" should be "BunBoHue"

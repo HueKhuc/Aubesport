@@ -40,16 +40,16 @@ class User
     private ?string $gender = null;
 
     #[Column(type: Types::DATE_IMMUTABLE, nullable:true)]
-    private ?\DateTimeImmutable $birthday;
+    private ?\DateTimeImmutable $birthday = null;
 
     #[Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
-    private ?\DateTimeImmutable $modifiedAt;
+    private ?\DateTimeImmutable $modifiedAt = null;
 
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
-    private ?\DateTimeImmutable $deletedAt;
+    private ?\DateTimeImmutable $deletedAt = null;
 
     #[OneToOne(targetEntity: Address::class)]
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
