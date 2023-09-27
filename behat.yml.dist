@@ -8,6 +8,15 @@ default:
 
             filters:
                 tags: '@users'
+
+        addresses:
+            contexts:
+                - App\Tests\Behat\RequestContext
+                - App\Tests\Behat\UserContext
+                - App\Tests\Behat\TransformationContext
+
+            filters:
+                tags: '@addresses'
         api_doc:
             contexts:
                 - App\Tests\Behat\RequestContext
