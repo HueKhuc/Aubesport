@@ -7,7 +7,6 @@ namespace App\Controller\User;
 use App\Entity\User;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,19 +19,11 @@ class Delete extends AbstractController
     #[Route('/api/users/{uuid}', methods: ['DELETE'])]
     #[OA\Response(
         response: 204,
-        description: 'Returns the user\'s information after being deleted',
-        content: new OA\JsonContent(
-            type: 'array',
-            items: new OA\Items(ref: new Model(type: User::class))
-        )
+        description: 'Successfully deleted'
     )]
     #[OA\Response(
         response: 400,
-        description: 'User not found',
-        content: new OA\JsonContent(
-            type: 'array',
-            items: new OA\Items(ref: new Model(type: User::class))
-        )
+        description: 'User not found'
     )]
     #[OA\Tag(name: 'User')]
     public function __invoke(
@@ -52,6 +43,6 @@ class Delete extends AbstractController
 
         $entityManager->flush();
 
-        return $this->json($user, 200);
+        return $this->json($user, 204);
     }
 }

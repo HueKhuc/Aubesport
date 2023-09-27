@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use App\Entity\User;
+use Monolog\Test\TestCase;
 use Symfony\Component\Uid\Uuid;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,5 +50,17 @@ class UserContext implements Context
         }
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * @Then the field :column in the database of the user having the uuid :uuid should not be null
+     */
+    public function theFieldShouldNotBeNull(string $column, string $uuid): void
+    {
+        $user = $this->entityManager->getRepository(User::class)->find($uuid);
+
+        if ($user !== null) {
+            TestCase::assertNotNull($user->getDeletedAt());
+        }
     }
 }
