@@ -41,6 +41,6 @@ class Delete extends AbstractController
 
         $entityManager->flush();
 
-        return $this->json('', 204);
+        return $this->json(null, 204);
     }
 }
