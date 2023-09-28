@@ -73,8 +73,7 @@ class UserContext implements Context
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $user = $this->entityManager->getRepository(User::class)->find($uuid);
 
-        if ($user !== null) {
-            TestCase::assertSame($propertyAccessor->getValue($user, $column), $expectedValue);
-        }
+        TestCase::assertNotNull($user);
+        TestCase::assertSame($propertyAccessor->getValue($user, $column), $expectedValue);
     }
 }
