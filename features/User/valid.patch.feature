@@ -13,5 +13,5 @@ Feature:
             }
         """
         Then I should receive a status code 200
-        And the node "pseudo" of the reponse should be "BunBoHue"
-        And the node "modifiedAt" of the reponse should not be null
+        And the node "pseudo" of the response should be "BunBoHue"
+        And the node "modifiedAt" of the response should not be null

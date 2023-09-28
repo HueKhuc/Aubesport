@@ -75,30 +75,38 @@ class RequestContext implements Context
     }
 
     /**
-     * @Then the node :key of the reponse should be :expectedValue
+     * @When I send a delete request to :uri
+     */
+    public function iSendADeleteRequest(string $uri): void
+    {
+        $this->response = $this->kernel->handle(Request::create($uri, 'DELETE'));
+    }
+
+    /**
+     * @Then the node :key of the response should be :expectedValue
      */
     public function theKeyIsExpectedValue(string $key, string|int|null $expectedValue): void
     {
         TestCase::assertNotNull($this->response);
         TestCase::assertIsString($this->response->getContent());
 
-        $reponse = json_decode(($this->response->getContent()), true);
+        $response = json_decode(($this->response->getContent()), true);
 
-        TestCase::assertIsArray($reponse);
-        TestCase::assertSame($reponse[$key], $expectedValue);
+        TestCase::assertIsArray($response);
+        TestCase::assertSame($response[$key], $expectedValue);
     }
 
     /**
-     * @Then the node :key of the reponse should not be null
+     * @Then the node :key of the response should not be null
      */
     public function theNodeIsNotNull(string $key): void
     {
         TestCase::assertNotNull($this->response);
         TestCase::assertIsString($this->response->getContent());
 
-        $reponse = json_decode(($this->response->getContent()), true);
+        $response = json_decode(($this->response->getContent()), true);
 
-        TestCase::assertIsArray($reponse);
-        TestCase::assertNotNull($reponse[$key]);
+        TestCase::assertIsArray($response);
+        TestCase::assertNotNull($response[$key]);
     }
 }

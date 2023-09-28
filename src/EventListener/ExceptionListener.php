@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Exception\NotFound;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -30,9 +31,10 @@ class ExceptionListener
                 json: true
             );
         } else {
+            $code = ($exception instanceof NotFound) ? 404 : 500;
             $response = new JsonResponse(
                 ['message' => $exception->getMessage()],
-                500
+                $code
             );
         }
 
