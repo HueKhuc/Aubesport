@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\User;
 
 use App\Entity\User;
+use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Delete extends AbstractController
@@ -22,27 +22,25 @@ class Delete extends AbstractController
         description: 'Successfully deleted'
     )]
     #[OA\Response(
-        response: 400,
+        response: 404,
         description: 'User not found'
     )]
     #[OA\Tag(name: 'User')]
     public function __invoke(
         string $uuid,
-        Request $request,
         SerializerInterface $serializer,
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator
+        EntityManagerInterface $entityManager
     ): Response {
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
         if ($user === null) {
-            return $this->json($user, 400);
+            throw new NotFound(Uuid::fromString($uuid));
         }
 
         $user->updateDeletedAt();
 
         $entityManager->flush();
 
-        return $this->json($user, 204);
+        return $this->json('', 204);
     }
 }
