@@ -15,4 +15,4 @@ Feature:
                  "postalCode":"69008"
             }
         """
-        Then I should receive a status code 200
+        Then I should receive a status code 201

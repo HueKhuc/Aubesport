@@ -59,16 +59,15 @@ class Post extends AbstractController
 
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
-        if($user === null) {
+        if ($user === null) {
             throw new NotFound(Uuid::fromString($uuid));
         }
 
         $user->setAddress($address);
 
         $entityManager->persist($user);
-        $entityManager->persist($address);
         $entityManager->flush();
 
-        return $this->json($address);
+        return $this->json($address, 201);
     }
 }
