@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller\Address;
 
-use App\Entity\Address;
 use App\Entity\User;
+use App\Entity\Address;
+use App\Exception\NotFound;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Uid\Uuid;
 use App\Dto\Address as AddressDto;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 
 class Post extends AbstractController
 {
@@ -27,16 +30,16 @@ class Post extends AbstractController
         )
     )]
     #[OA\Response(
-        response: 200,
-        description: 'Returns the Address',
+        response: 201,
+        description: 'Returns user\'s address',
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: Address::class))
         )
     )]
     #[OA\Response(
-        response: 400,
-        description: 'Bad Request'
+        response: 422,
+        description: 'Validation errors'
     )]
     #[OA\Tag(name: 'Address')]
     public function __invoke(
@@ -44,32 +47,26 @@ class Post extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        #[MapRequestPayload]
+        AddressDto $addressDto
     ): Response {
-        $addressDto = $serializer->deserialize(
-            $request->getContent(),
-            AddressDto::class,
-            'json'
-        );
-
-        $errors = $validator->validate($addressDto);
-        if (count($errors) > 0) {
-            return $this->json($errors, 400);
-        }
-
         $address = $serializer->deserialize(
             $serializer->serialize($addressDto, 'json'),
             Address::class,
             'json'
         );
+
         $user = $entityManager->getRepository(User::class)->find($uuid);
-        if($user !== null) {
-            $user->setAddress($address);
-            $entityManager->persist($user);
+
+        if($user === null) {
+            throw new NotFound(Uuid::fromString($uuid));
         }
 
-        $entityManager->persist($address);
+        $user->setAddress($address);
 
+        $entityManager->persist($user);
+        $entityManager->persist($address);
         $entityManager->flush();
 
         return $this->json($address);

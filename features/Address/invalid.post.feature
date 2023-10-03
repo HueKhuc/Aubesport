@@ -14,6 +14,6 @@ Feature:
                  "postalCode": "690089"
             }
         """
-        Then I should receive a status code 400
-        And the node "detail" of the reponse should be "postalCode: Le code postal doit contenir exactement 5 chiffres."
+        Then I should receive a status code 422
+        And the node "detail" of the response should be "postalCode: Le code postal doit contenir exactement 5 chiffres."
 

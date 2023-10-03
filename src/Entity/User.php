@@ -69,6 +69,7 @@ class User
     public function setAddress(?Address $address): static
     {
         $this->address = $address;
+
         return $this;
     }
 
