@@ -13,7 +13,8 @@ return (new PhpCsFixer\Config())
         'strict_param' => true,
         'class_attributes_separation' => true,
         'no_unused_imports' => true,
-        'blank_line_before_statement' => true
+        'blank_line_before_statement' => true,
+        'single_space_after_construct' => true
     ])
     ->setFinder($finder)
 ;
