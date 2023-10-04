@@ -51,7 +51,7 @@ class User
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
-    #[OneToOne(targetEntity: Address::class)]
+    #[OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
     private ?Address $address = null;
 
@@ -64,6 +64,18 @@ class User
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
     }
 
     public function getEmail(): string
