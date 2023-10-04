@@ -24,35 +24,35 @@ class User
     #[Column(type: Types::STRING, unique: true)]
     private string $email;
 
-    #[Column(type: Types::STRING, nullable:true)]
+    #[Column(type: Types::STRING, nullable: true)]
     private ?string $pseudo = null;
 
-    #[Column(type: Types::STRING, nullable:true)]
+    #[Column(type: Types::STRING, nullable: true)]
     private ?string $bio = null;
 
-    #[Column(type: Types::STRING, nullable:true)]
+    #[Column(type: Types::STRING, nullable: true)]
     private ?string $firstName = null;
 
-    #[Column(type: Types::STRING, nullable:true)]
+    #[Column(type: Types::STRING, nullable: true)]
     private ?string $lastName = null;
 
-    #[Column(type: Types::STRING, nullable:true)]
+    #[Column(type: Types::STRING, nullable: true)]
     private ?string $gender = null;
 
-    #[Column(type: Types::DATE_IMMUTABLE, nullable:true)]
+    #[Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $birthday = null;
 
     #[Column(type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
-    #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
+    #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $modifiedAt = null;
 
-    #[Column(type: Types::DATETIME_IMMUTABLE, nullable:true)]
+    #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable:true)]
+    #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable: true)]
     private ?Address $address = null;
 
     public function __construct(Uuid $uuid = null)
