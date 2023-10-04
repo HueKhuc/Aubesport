@@ -18,16 +18,16 @@ class Address
     private string $uuid;
 
     #[Column(type: Types::STRING)]
-    private string $streetName;
+    private string $streetName = '';
 
     #[Column(type: Types::STRING)]
-    private string $city;
+    private string $city = '';
 
     #[Column(type: Types::STRING)]
-    private string $streetNumber;
+    private string $streetNumber = '';
 
     #[Column(type: Types::STRING)]
-    private string $postalCode;
+    private string $postalCode = '';
 
     public function __construct()
     {
