@@ -6,8 +6,10 @@ namespace App\Controller\User;
 
 use App\Entity\User;
 use App\Dto\UserPatch;
-use App\ObjectManipulation\UpdateObject;
+use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Uid\Uuid;
+use App\ObjectManipulation\UpdateObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +41,10 @@ class Patch extends AbstractController
         response: 422,
         description: 'Validation errors'
     )]
-
+    #[OA\Response(
+        response: 400,
+        description: 'User not found'
+    )]
     #[OA\Tag(name: 'User')]
     public function __invoke(
         string $uuid,
@@ -54,7 +59,7 @@ class Patch extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
         if ($user === null) {
-            return $this->json($user, 400);
+            throw new NotFound(Uuid::fromString($uuid));
         }
 
         $updateObject($user, $userDto);

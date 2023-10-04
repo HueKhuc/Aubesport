@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Address;
 
 use App\Entity\Address;
+use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Uid\Uuid;
 use App\Dto\Address as AddressDto;
 use App\Repository\AddressRepository;
 use App\ObjectManipulation\UpdateObject;
@@ -40,6 +42,10 @@ class Patch extends AbstractController
         response: 422,
         description: 'Validation errors'
     )]
+    #[OA\Response(
+        response: 400,
+        description: 'User not found'
+    )]
     #[OA\Tag(name: 'Address')]
     public function __invoke(
         string $uuid,
@@ -55,13 +61,13 @@ class Patch extends AbstractController
         $address = $addressRepository->findByUserUuid($uuid);
 
         if ($address === null) {
-            return $this->json($address, 400);
+            throw new NotFound(Uuid::fromString($uuid));
         }
 
         $updateObject($address, $addressDto);
 
         $entityManager->flush();
 
-        return $this->json($address);
+        return $this->json($address, 200);
     }
 }
