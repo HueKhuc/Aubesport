@@ -100,7 +100,6 @@ class UserContext implements Context
         $user->setAddress($address);
 
         $this->entityManager->persist($user);
-        $this->entityManager->persist($address);
         $this->entityManager->flush();
     }
 }

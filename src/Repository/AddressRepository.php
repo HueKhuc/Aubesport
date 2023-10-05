@@ -28,13 +28,14 @@ class AddressRepository extends ServiceEntityRepository
             ]);
 
         $query = $qb->getQuery();
+        $result = $query->getOneOrNullResult();
 
-        if ($query->getOneOrNullResult() === null) {
+        if ($result === null) {
             return null;
         }
 
-        assert($query->getOneOrNullResult() instanceof Address);
+        assert($result instanceof Address);
 
-        return $query->getOneOrNullResult();
+        return $result;
     }
 }
