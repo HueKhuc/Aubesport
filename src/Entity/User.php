@@ -55,10 +55,26 @@ class User
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable: true)]
     private ?Address $address = null;
 
+    #[OneToOne(targetEntity: Authentication::class, cascade: ['persist', 'remove'])]
+    #[JoinColumn(name: 'authentication_uuid', referencedColumnName: 'uuid')]
+    private Authentication $authentication;
+
     public function __construct(Uuid $uuid = null)
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->uuid = $uuid instanceof Uuid ? $uuid->toRfc4122() : Uuid::v4()->toRfc4122();
+    }
+
+    public function getAuthentication(): Authentication
+    {
+        return $this->authentication;
+    }
+
+    public function setAuthentication(Authentication $authentication): static
+    {
+        $this->authentication = $authentication;
+
+        return $this;
     }
 
     public function getUuid(): string
