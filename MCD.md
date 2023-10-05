@@ -7,6 +7,7 @@ erDiagram
         string uuid PK
         string email UK "type email, unique"
         string password "hashed"
+        string role "admin, player, user"
         string pseudo
         string bio
         string firstName
@@ -17,13 +18,6 @@ erDiagram
         date createdAt
         date deletedAt
     }
-
-    USER }o--o{ ROLE : have
-    ROLE {
-        string uuid PK
-        string label "admin, non-admin (user, visiteur, participant1, participant2)"
-    }
-
 
     USER |o--o{ FAVORITE_GAMES : like
     FAVORITE_GAMES {

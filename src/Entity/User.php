@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[Entity]
 #[UniqueEntity('email')]
-class User implements PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[Id]
     #[Column(type: Types::STRING)]
@@ -24,6 +25,9 @@ class User implements PasswordAuthenticatedUserInterface
 
     #[Column(type: Types::STRING, unique: true)]
     private string $email;
+
+    #[Column(type: Types::STRING)]
+    private string $role = 'ROLE_USER';
 
     #[Column(type: Types::STRING, nullable: true)]
     private ?string $pseudo = null;
@@ -63,6 +67,28 @@ class User implements PasswordAuthenticatedUserInterface
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->uuid = $uuid instanceof Uuid ? $uuid->toRfc4122() : Uuid::v4()->toRfc4122();
+    }
+
+    public function getRoles(): array
+    {
+        return [$this->role];
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 
     public function getPassword(): string
