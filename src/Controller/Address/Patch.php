@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\User;
+namespace App\Controller\Address;
 
-use App\Entity\User;
-use App\Dto\UserPatch;
+use App\Entity\Address;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Uid\Uuid;
+use App\Dto\Address as AddressDto;
+use App\Repository\AddressRepository;
 use App\ObjectManipulation\UpdateObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -22,11 +23,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Patch extends AbstractController
 {
-    #[Route('/api/users/{uuid}', methods: ['PATCH'])]
+    #[Route('/api/users/{uuid}/addresses', methods: ['PATCH'])]
     #[OA\RequestBody(
         content: new OA\JsonContent(
             type: 'object',
-            ref: new Model(type: UserPatch::class)
+            ref: new Model(type: addressDto::class)
         )
     )]
     #[OA\Response(
@@ -34,7 +35,7 @@ class Patch extends AbstractController
         description: 'Returns the user\'s information after modification',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: User::class))
+            items: new OA\Items(ref: new Model(type: Address::class))
         )
     )]
     #[OA\Response(
@@ -45,7 +46,7 @@ class Patch extends AbstractController
         response: 400,
         description: 'User not found'
     )]
-    #[OA\Tag(name: 'User')]
+    #[OA\Tag(name: 'Address')]
     public function __invoke(
         string $uuid,
         Request $request,
@@ -53,20 +54,20 @@ class Patch extends AbstractController
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         #[MapRequestPayload]
-        UserPatch $userDto,
-        UpdateObject $updateObject
+        AddressDto $addressDto,
+        UpdateObject $updateObject,
+        AddressRepository $addressRepository
     ): Response {
-        $user = $entityManager->getRepository(User::class)->find($uuid);
+        $address = $addressRepository->findByUserUuid($uuid);
 
-        if ($user === null) {
+        if ($address === null) {
             throw new NotFound(Uuid::fromString($uuid));
         }
 
-        $updateObject($user, $userDto);
-        $user->updateModifiedAt();
+        $updateObject($address, $addressDto);
 
         $entityManager->flush();
 
-        return $this->json($user, 200);
+        return $this->json($address, 200);
     }
 }

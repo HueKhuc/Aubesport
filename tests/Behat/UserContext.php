@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
+use App\Entity\Address;
 use App\Entity\User;
 use Monolog\Test\TestCase;
 use Symfony\Component\Uid\Uuid;
@@ -75,5 +76,30 @@ class UserContext implements Context
 
         TestCase::assertNotNull($user);
         TestCase::assertSame($propertyAccessor->getValue($user, $column), $expectedValue);
+    }
+
+    /**
+     * @Given there is an existant user with email :email, uuid :uuid, address with streetNumber :streetNumber, streetName :streetName, postalCode :postalCode and city :city
+    */
+    public function thereIsAnExistantUserWithAddress(
+        string $email,
+        string $uuid,
+        string $streetNumber,
+        string $streetName,
+        string $postalCode,
+        string $city
+    ): void {
+        $address = new Address();
+        $address->setStreetNumber($streetNumber)
+            ->setStreetName($streetName)
+            ->setPostalCode($postalCode)
+            ->setCity($city);
+
+        $user = new User(Uuid::fromString($uuid));
+        $user->setEmail($email);
+        $user->setAddress($address);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }
