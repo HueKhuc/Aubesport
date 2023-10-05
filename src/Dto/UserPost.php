@@ -18,7 +18,7 @@ class UserPost extends UserInput
     #[Assert\NotNull]
     #[Assert\PasswordStrength([
         'minScore' => PasswordStrength::STRENGTH_WEAK,
-        'message' => 'Password must include at least 10 characters, 1 number, 1 letter and 1 special character'
+        'message' => 'Password must have at least 10 characters, including at least 1 letter, 1 number and 1 special character'
     ])]
     public string $password;
 }
