@@ -13,14 +13,15 @@ Feature:
             }
         """
         Then I should receive a status code 422
-    
+
     Scenario: Players register with existing email
         Given there is an existant user with email "myEmail@gmail.com" and uuid "a245f890-accf-4295-a00a-522732682fdc"
         When I send a post request to "/api/users" with
         """
             {
                 "email": "myEmail@gmail.com",
-                "pseudo": "BunBoHue"
+                "pseudo": "BunBoHue",
+                "password": "Ab1234567?"
             }
         """
         Then I should receive a status code 409

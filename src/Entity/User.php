@@ -12,10 +12,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[Entity]
 #[UniqueEntity('email')]
-class User
+class User implements PasswordAuthenticatedUserInterface
 {
     #[Id]
     #[Column(type: Types::STRING)]
@@ -55,9 +56,8 @@ class User
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable: true)]
     private ?Address $address = null;
 
-    #[OneToOne(targetEntity: Authentication::class, cascade: ['persist', 'remove'])]
-    #[JoinColumn(name: 'authentication_uuid', referencedColumnName: 'uuid')]
-    private Authentication $authentication;
+    #[Column(type: Types::STRING)]
+    private string $password;
 
     public function __construct(Uuid $uuid = null)
     {
@@ -65,14 +65,14 @@ class User
         $this->uuid = $uuid instanceof Uuid ? $uuid->toRfc4122() : Uuid::v4()->toRfc4122();
     }
 
-    public function getAuthentication(): Authentication
+    public function getPassword(): string
     {
-        return $this->authentication;
+        return $this->password;
     }
 
-    public function setAuthentication(Authentication $authentication): static
+    public function setPassword(string $password): static
     {
-        $this->authentication = $authentication;
+        $this->password = $password;
 
         return $this;
     }

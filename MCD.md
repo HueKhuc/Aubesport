@@ -5,11 +5,12 @@ title: MCD du site AubEsport
 erDiagram
     USER {
         string uuid PK
+        string email UK "type email, unique"
+        string password "hashed"
         string pseudo
         string bio
         string firstName
         string lastName
-        string email UK "type email, unique"
         date birthday
         string gender "autre, femme, homme"
         date modifiedAt
@@ -28,14 +29,6 @@ erDiagram
     FAVORITE_GAMES {
         string uuid PK
         string name
-    }
-    
-    USER ||--o{ AUTHENTICATION : have
-    AUTHENTICATION {
-        string uuid PK
-        string password
-        date modifiedAt
-        date createdAt
     }
 
     USER ||--o{ ADDRESS : have
