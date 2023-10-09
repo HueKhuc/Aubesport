@@ -14,11 +14,16 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Entity]
 #[UniqueEntity('email')]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
+    public const GENDERS = ['autre', 'femme', 'homme'];
+
+    public const ROLES = ['ROLE_ADMIN', 'ROLE_PLAYER', 'ROLE_USER'];
+
     #[Id]
     #[Column(type: Types::STRING)]
     private string $uuid;
@@ -26,6 +31,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[Column(type: Types::STRING, unique: true)]
     private string $email;
 
+    #[Assert\Choice(choices: User::ROLES)]
     #[Column(type: Types::STRING)]
     private string $role = 'ROLE_USER';
 
@@ -41,6 +47,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[Column(type: Types::STRING, nullable: true)]
     private ?string $lastName = null;
 
+    #[Assert\Choice(choices: User::GENDERS)]
     #[Column(type: Types::STRING, nullable: true)]
     private ?string $gender = null;
 

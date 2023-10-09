@@ -34,10 +34,10 @@ security:
         - { path: ^/api/login$, roles: PUBLIC_ACCESS }
         - { path: ^/api/users$, roles: PUBLIC_ACCESS, method: 'POST' }
         - { path: ^/api/users, roles: ROLE_ADMIN, method: 'GET' }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
-    security:  
+    security:
         password_hashers:
             # By default, password hashers are resource intensive and take time. This is
             # important to generate secure password hashes. In tests however, secure hashes
