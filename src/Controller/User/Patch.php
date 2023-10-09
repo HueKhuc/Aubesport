@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\User;
 
+use App\Dto\UserOutput;
 use App\Entity\User;
 use App\Dto\UserPatch;
 use App\Exception\NotFound;
@@ -34,7 +35,7 @@ class Patch extends AbstractController
         description: 'Returns the user\'s information after modification',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: User::class))
+            items: new OA\Items(ref: new Model(type: UserOutput::class))
         )
     )]
     #[OA\Response(
@@ -67,6 +68,12 @@ class Patch extends AbstractController
 
         $entityManager->flush();
 
-        return $this->json($user, 200);
+        $userOutput = $serializer->deserialize(
+            $serializer->serialize($user, 'json'),
+            UserOutput::class,
+            'json'
+        );
+
+        return $this->json($userOutput, 200);
     }
 }

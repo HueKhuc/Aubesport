@@ -8,8 +8,9 @@ Feature:
         When I send a post request to "/api/users" with
         """
             {
-                "email": "myEmail11@gmail.com",
-                "pseudo": "BunBoHue"
+                "email": "myEmail15@gmail.com",
+                "pseudo": "BunBoHue",
+                "password": "Ab1234567?"
             }
         """
         Then I should receive a status code 201

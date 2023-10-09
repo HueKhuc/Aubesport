@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\User;
 
+use App\Dto\UserOutput;
 use App\Entity\User;
-use App\Dto\UserPost as UserDto;
 use OpenApi\Attributes as OA;
+use App\Dto\UserPost;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class Post extends AbstractController
 {
@@ -23,7 +25,7 @@ class Post extends AbstractController
     #[OA\RequestBody(
         content: new OA\JsonContent(
             type: 'object',
-            ref: new Model(type: UserDto::class)
+            ref: new Model(type: UserPost::class)
         )
     )]
     #[OA\Response(
@@ -31,7 +33,7 @@ class Post extends AbstractController
         description: 'Returns the information of an user',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: UserDto::class))
+            items: new OA\Items(ref: new Model(type: UserOutput::class))
         )
     )]
     #[OA\Response(
@@ -49,13 +51,20 @@ class Post extends AbstractController
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         #[MapRequestPayload]
-        UserDto $userDto
+        UserPost $userDto,
+        UserPasswordHasherInterface $passwordHasher
     ): Response {
         $user = $serializer->deserialize(
             $serializer->serialize($userDto, 'json'),
             User::class,
             'json'
         );
+
+        $hashedPassword = $passwordHasher->hashPassword(
+            $user,
+            $user->getPassword()
+        );
+        $user->setPassword($hashedPassword);
 
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
@@ -65,6 +74,12 @@ class Post extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->json($user, 201);
+        $userOutput = $serializer->deserialize(
+            $serializer->serialize($user, 'json'),
+            UserOutput::class,
+            'json'
+        );
+
+        return $this->json($userOutput, 201);
     }
 }

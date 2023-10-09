@@ -35,6 +35,7 @@ class UserContext implements Context
     {
         $user = new User(Uuid::fromString($uuid));
         $user->setEmail($email);
+        $user->setPassword('A');
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -48,6 +49,8 @@ class UserContext implements Context
         for ($i = 1; $i <= $numberOfUsers; $i++) {
             $user = new User();
             $user->setEmail('email'.$i.'@gmail.com');
+            $user->setPassword('A');
+
             $this->entityManager->persist($user);
         }
 
@@ -98,6 +101,7 @@ class UserContext implements Context
         $user = new User(Uuid::fromString($uuid));
         $user->setEmail($email);
         $user->setAddress($address);
+        $user->setPassword('a');
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
