@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\User;
 
-use App\Dto\UserOutput;
 use App\Entity\User;
-use OpenApi\Attributes as OA;
 use App\Dto\UserPost;
+use App\Dto\UserOutput;
+use App\Event\UserCreatedEvent;
+use OpenApi\Attributes as OA;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +54,8 @@ class Post extends AbstractController
         ValidatorInterface $validator,
         #[MapRequestPayload]
         UserPost $userDto,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        EventDispatcherInterface $dispatcher
     ): Response {
         $user = $serializer->deserialize(
             $serializer->serialize($userDto, 'json'),
@@ -79,6 +82,9 @@ class Post extends AbstractController
             UserOutput::class,
             'json'
         );
+
+        $event = new UserCreatedEvent($user);
+        $dispatcher->dispatch($event, UserCreatedEvent::NAME);
 
         return $this->json($userOutput, 201);
     }

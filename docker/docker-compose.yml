@@ -45,5 +45,14 @@ services:
         networks:
             - aubesport_symfony-lab
 
+    maildev:
+        image: maildev/maildev
+        container_name: symfony-lab_maildev
+        ports: 
+            - '1080:1080'
+            - '1025:1025'
+        networks:
+            - aubesport_symfony-lab
+
 networks:
     aubesport_symfony-lab: ~
