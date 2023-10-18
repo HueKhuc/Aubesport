@@ -56,7 +56,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
-    #[OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
+    #[OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid', nullable: true)]
     private ?Address $address = null;
 
