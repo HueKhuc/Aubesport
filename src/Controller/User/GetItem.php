@@ -8,7 +8,6 @@ use App\Dto\UserOutput;
 use App\Entity\User;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +47,7 @@ class GetItem extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
         if ($user === null) {
-            throw new NotFound(Uuid::fromString($uuid));
+            throw new NotFound('User not found');
         }
 
         $userOutput = $serializer->deserialize(
