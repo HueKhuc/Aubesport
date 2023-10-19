@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Get extends AbstractController
 {
-    #[Route('/api/users/{uuid}/addresses', methods: ['GET'])]
+    #[Route('/api/users/{uuid}/address', methods: ['GET'])]
     #[OA\Response(
         response: 200,
         description: 'Returns the user\'s address',

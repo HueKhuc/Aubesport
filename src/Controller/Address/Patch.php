@@ -22,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Patch extends AbstractController
 {
-    #[Route('/api/users/{uuid}/addresses', methods: ['PATCH'])]
+    #[Route('/api/users/{uuid}/address', methods: ['PATCH'])]
     #[OA\RequestBody(
         content: new OA\JsonContent(
             type: 'object',
