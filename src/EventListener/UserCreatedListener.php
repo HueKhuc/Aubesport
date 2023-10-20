@@ -26,10 +26,11 @@ class UserCreatedListener
         $email = (new Email())
             ->from('noreply@aubesport.fr')
             ->to($user->getEmail())
-            ->cc('admin@gmail.com')
-            ->subject('Test Symfony Mailer!')
-            ->html($this->twig->render('user.mail.twig', [
-                'email' => $user->getEmail()
+            ->cc('admin@aubesport.fr')
+            ->subject("Confirmation d'inscription AUBesport")
+            ->html($this->twig->render('new.user.confirmation.mail.twig', [
+                'email' => $user->getEmail(),
+                'firstName' => $user->getFirstName()
             ]));
 
         $this->mailer->send($email);
