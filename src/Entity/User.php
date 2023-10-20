@@ -257,16 +257,4 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
         return $this;
     }
-
-    public function removeTournamentRegistration(TournamentRegistration $tournamentRegistration): static
-    {
-        if ($this->tournamentRegistrations->removeElement($tournamentRegistration)) {
-            // set the owning side to null (unless already changed)
-            if ($tournamentRegistration->getUser() === $this) {
-                $tournamentRegistration->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
@@ -124,18 +126,6 @@ class Tournament
         if (!$this->tournamentRegistrations->contains($tournamentRegistration)) {
             $this->tournamentRegistrations->add($tournamentRegistration);
             $tournamentRegistration->setTournament($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTournamentRegistration(TournamentRegistration $tournamentRegistration): static
-    {
-        if ($this->tournamentRegistrations->removeElement($tournamentRegistration)) {
-            // set the owning side to null (unless already changed)
-            if ($tournamentRegistration->getTournament() === $this) {
-                $tournamentRegistration->setTournament(null);
-            }
         }
 
         return $this;
