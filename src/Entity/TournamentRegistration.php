@@ -70,7 +70,7 @@ class TournamentRegistration
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -80,9 +80,9 @@ class TournamentRegistration
         return $this->modifiedAt;
     }
 
-    public function setModifiedAt(?\DateTimeImmutable $modifiedAt): static
+    public function updateModifiedAt(): static
     {
-        $this->modifiedAt = $modifiedAt;
+        $this->modifiedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -92,14 +92,14 @@ class TournamentRegistration
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
+    public function updateDeletedAt(): static
     {
-        $this->deletedAt = $deletedAt;
+        $this->deletedAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }

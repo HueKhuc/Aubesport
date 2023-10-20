@@ -240,9 +240,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, TournamentRegistration>
-     */
     public function getTournamentRegistrations(): Collection
     {
         return $this->tournamentRegistrations;

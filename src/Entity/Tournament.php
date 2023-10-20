@@ -97,9 +97,9 @@ class Tournament
         return $this->modifiedAt;
     }
 
-    public function setModifiedAt(?\DateTimeImmutable $modifiedAt): static
+    public function updateModifiedAt(): static
     {
-        $this->modifiedAt = $modifiedAt;
+        $this->modifiedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -109,9 +109,9 @@ class Tournament
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
+    public function updateDeletedAt(): static
     {
-        $this->deletedAt = $deletedAt;
+        $this->deletedAt = new \DateTimeImmutable();
 
         return $this;
     }
