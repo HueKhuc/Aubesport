@@ -42,13 +42,26 @@ erDiagram
     }
 
 
-    USER }o--o{ TOURNAMENT : register
+    TOURNAMENT ||--o{ TOURNAMENT-REGISTRATION : register  
     TOURNAMENT {
         string uuid PK
         string name
         date startingDate
         date endingDate
-        bool hasPaid   
+        date createdAt
+        date modifiedAt 
+        date deletedAt 
+    }
+
+    USER ||--o{ TOURNAMENT-REGISTRATION : register    
+    TOURNAMENT-REGISTRATION {
+        string uuid PK
+        User user
+        Tournament tournament
+        string status "pending, refused, accepted"
+        date createdAt
+        date modifiedAt 
+        date deletedAt    
     }
 
 ```

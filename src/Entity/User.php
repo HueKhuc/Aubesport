@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToOne;
@@ -63,10 +66,14 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[Column(type: Types::STRING)]
     private string $password;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: TournamentRegistration::class, orphanRemoval: true)]
+    private Collection $tournamentRegistrations;
+
     public function __construct(Uuid $uuid = null)
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->uuid = $uuid instanceof Uuid ? $uuid->toRfc4122() : Uuid::v4()->toRfc4122();
+        $this->tournamentRegistrations = new ArrayCollection();
     }
 
     public function getRoles(): array
@@ -229,6 +236,36 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function updateDeletedAt(): static
     {
         $this->deletedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TournamentRegistration>
+     */
+    public function getTournamentRegistrations(): Collection
+    {
+        return $this->tournamentRegistrations;
+    }
+
+    public function addTournamentRegistration(TournamentRegistration $tournamentRegistration): static
+    {
+        if (!$this->tournamentRegistrations->contains($tournamentRegistration)) {
+            $this->tournamentRegistrations->add($tournamentRegistration);
+            $tournamentRegistration->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTournamentRegistration(TournamentRegistration $tournamentRegistration): static
+    {
+        if ($this->tournamentRegistrations->removeElement($tournamentRegistration)) {
+            // set the owning side to null (unless already changed)
+            if ($tournamentRegistration->getUser() === $this) {
+                $tournamentRegistration->setUser(null);
+            }
+        }
 
         return $this;
     }
