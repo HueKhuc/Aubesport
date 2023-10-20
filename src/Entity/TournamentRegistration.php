@@ -15,7 +15,7 @@ class TournamentRegistration
     private string $uuid;
 
     #[ORM\ManyToOne(inversedBy: 'tournamentRegistrations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private Tournament $tournament;
 
     #[ORM\Column(length: 255)]
@@ -31,7 +31,7 @@ class TournamentRegistration
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'tournamentRegistrations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private User $user;
 
     public function __construct()

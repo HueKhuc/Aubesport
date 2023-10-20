@@ -44,12 +44,12 @@ class Tournament
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function getUuid(): ?string
+    public function getUuid(): string
     {
         return $this->uuid;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -114,9 +114,6 @@ class Tournament
         return $this;
     }
 
-    /**
-     * @return Collection<int, TournamentRegistration>
-     */
     public function getTournamentRegistrations(): Collection
     {
         return $this->tournamentRegistrations;
