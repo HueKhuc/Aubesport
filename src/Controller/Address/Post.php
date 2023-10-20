@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Post extends AbstractController
 {
-    #[Route('/api/users/{uuid}/addresses', methods: ['POST'])]
+    #[Route('/api/users/{uuid}/address', methods: ['POST'])]
     #[OA\RequestBody(
         content: new OA\JsonContent(
             type: 'object',

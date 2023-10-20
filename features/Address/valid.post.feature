@@ -1,4 +1,4 @@
-@addresses
+@address
 Feature:
     In order to modify the information of an user
     As an user
@@ -6,7 +6,7 @@ Feature:
 
     Scenario: I modify with VALID infos
         Given there is an existant user with email "my-Email@gmail.com" and uuid "c2ef4afb-fc3a-487d-818a-75af0a7e6819"
-        When I send a post request to "/api/users/c2ef4afb-fc3a-487d-818a-75af0a7e6819/addresses" with
+        When I send a post request to "/api/users/c2ef4afb-fc3a-487d-818a-75af0a7e6819/address" with
         """
             {
                  "streetName": "rue garnier",
