@@ -244,14 +244,4 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         return $this->tournamentRegistrations;
     }
-
-    public function addTournamentRegistration(TournamentRegistration $tournamentRegistration): static
-    {
-        if (!$this->tournamentRegistrations->contains($tournamentRegistration)) {
-            $this->tournamentRegistrations->add($tournamentRegistration);
-            $tournamentRegistration->setUser($this);
-        }
-
-        return $this;
-    }
 }

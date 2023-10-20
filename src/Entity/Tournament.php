@@ -120,14 +120,4 @@ class Tournament
     {
         return $this->tournamentRegistrations;
     }
-
-    public function addTournamentRegistration(TournamentRegistration $tournamentRegistration): static
-    {
-        if (!$this->tournamentRegistrations->contains($tournamentRegistration)) {
-            $this->tournamentRegistrations->add($tournamentRegistration);
-            $tournamentRegistration->setTournament($this);
-        }
-
-        return $this;
-    }
 }
