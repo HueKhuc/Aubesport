@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Entity\Address;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Uid\Uuid;
 use App\Dto\Address as AddressDto;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -60,7 +59,7 @@ class Post extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
         if ($user === null) {
-            throw new NotFound(Uuid::fromString($uuid));
+            throw new NotFound('User not found');
         }
 
         $user->setAddress($address);

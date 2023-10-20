@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Dto\UserPatch;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Uid\Uuid;
 use App\ObjectManipulation\UpdateObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -60,7 +59,7 @@ class Patch extends AbstractController
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
         if ($user === null) {
-            throw new NotFound(Uuid::fromString($uuid));
+            throw new NotFound('User not found');
         }
 
         $updateObject($user, $userDto);
