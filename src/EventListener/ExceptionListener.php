@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Exception\NotFound;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -15,8 +16,10 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 #[AsEventListener(event: KernelEvents::EXCEPTION)]
 class ExceptionListener
 {
-    public function __construct(private readonly SerializerInterface $serializer)
-    {
+    public function __construct(
+        private readonly SerializerInterface $serializer,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     public function __invoke(ExceptionEvent $exceptionEvent): void
@@ -36,6 +39,7 @@ class ExceptionListener
                 ['message' => $exception->getMessage()],
                 $code
             );
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTrace()]);
         }
 
         $exceptionEvent->setResponse($response);
