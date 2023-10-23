@@ -35,7 +35,6 @@ class GetCollection extends AbstractController
     public function __invoke(
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
-        Request $request,
         #[MapQueryParameter]
         int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
         #[MapQueryParameter]
