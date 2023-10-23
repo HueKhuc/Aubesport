@@ -9,10 +9,8 @@ use App\Entity\Tournament;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -34,7 +32,6 @@ class GetCollection extends AbstractController
     #[OA\Tag(name: 'Tournament')]
     public function __invoke(
         EntityManagerInterface $entityManager,
-        SerializerInterface $serializer,
         #[MapQueryParameter]
         int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
         #[MapQueryParameter]
@@ -57,11 +54,15 @@ class GetCollection extends AbstractController
 
         $tournamentsOutput = [];
         foreach ($tournaments as $tournament) {
-            $tournamentOutput = $serializer->deserialize(
-                $serializer->serialize($tournament, 'json'),
-                TournamentOutput::class,
-                'json'
-            );
+            $tournamentOutput = new TournamentOutput();
+
+            $tournamentOutput->uuid = $tournament->getUuid();
+            $tournamentOutput->name = $tournament->getName();
+            $tournamentOutput->startingDate = $tournament->getStartingDate();
+            $tournamentOutput->endingDate = $tournament->getEndingDate();
+            $tournamentOutput->createdAt = $tournament->getCreatedAt();
+            $tournamentOutput->modifiedAt = $tournament->getModifiedAt();
+            $tournamentOutput->deletedAt = $tournament->getDeletedAt();
 
             $tournamentsOutput[] = $tournamentOutput;
         }
