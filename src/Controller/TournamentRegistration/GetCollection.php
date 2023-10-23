@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller\TournamentRegistration;
 
+use App\ObjectManipulation\TransferObject;
 use OpenApi\Attributes as OA;
 use App\Entity\TournamentRegistration;
-use App\ObjectManipulation\TransferDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Dto\TournamentRegistrationOutput;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -36,9 +34,7 @@ class GetCollection extends AbstractController
     public function __invoke(
         TournamentRegistrationOutput $tournamentRegistrationOutput,
         EntityManagerInterface $entityManager,
-        SerializerInterface $serializer,
-        TransferDTO $transferDTO,
-        Request $request,
+        TransferObject $transferDTO,
         #[MapQueryParameter]
         int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
         #[MapQueryParameter]
@@ -63,7 +59,7 @@ class GetCollection extends AbstractController
 
         foreach ($tournamentRegistrations as $tournamentRegistration) {
             $tournamentRegistrationOutput = new TournamentRegistrationOutput();
-            
+
             $transferDTO($tournamentRegistration, $tournamentRegistrationOutput);
 
             $tournamentRegistrationsOutput[] = $tournamentRegistrationOutput;
