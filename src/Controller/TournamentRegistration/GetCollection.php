@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\TournamentRegistration;
 
-use App\Dto\TournamentRegistrationOutput;
-use App\Entity\TournamentRegistration;
 use OpenApi\Attributes as OA;
+use App\Entity\TournamentRegistration;
+use App\ObjectManipulation\TransferDTO;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Dto\TournamentRegistrationOutput;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +37,7 @@ class GetCollection extends AbstractController
         TournamentRegistrationOutput $tournamentRegistrationOutput,
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
+        TransferDTO $transferDTO,
         Request $request,
         #[MapQueryParameter]
         int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
@@ -60,13 +62,9 @@ class GetCollection extends AbstractController
         $tournamentRegistrationsOutput = [];
 
         foreach ($tournamentRegistrations as $tournamentRegistration) {
-            $tournamentRegistrationOutput->uuid = $tournamentRegistration->getUuid();
-            $tournamentRegistrationOutput->userUuid = $tournamentRegistration->getUser()->getUuid();
-            $tournamentRegistrationOutput->tournamentUuid = $tournamentRegistration->getTournament()->getUuid();
-            $tournamentRegistrationOutput->status = $tournamentRegistration->getStatus();
-            $tournamentRegistrationOutput->createdAt = $tournamentRegistration->getCreatedAt();
-            $tournamentRegistrationOutput->modifiedAt = $tournamentRegistration->getModifiedAt();
-            $tournamentRegistrationOutput->deletedAt = $tournamentRegistration->getDeletedAt();
+            $tournamentRegistrationOutput = new TournamentRegistrationOutput();
+            
+            $transferDTO($tournamentRegistration, $tournamentRegistrationOutput);
 
             $tournamentRegistrationsOutput[] = $tournamentRegistrationOutput;
         }
