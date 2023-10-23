@@ -36,7 +36,7 @@ class Post extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-    #[MapRequestPayload]
+        #[MapRequestPayload]
         TournamentRegistrationInput $tournamentRegistrationInput,
         TournamentRegistrationOutput $tournamentRegistrationOutput
     ): Response {

@@ -7,7 +7,7 @@ namespace App\Dto;
 class TournamentRegistrationOutput
 {
     public string $uuid;
-    
+
     public string $userUuid;
 
     public string $tournamentUuid;
