@@ -7,17 +7,17 @@ namespace App\Controller\User;
 use App\Entity\User;
 use App\Dto\UserPost;
 use App\Dto\UserOutput;
-use App\Event\UserCreatedEvent;
 use OpenApi\Attributes as OA;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Event\UserCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\ObjectManipulation\TransferUserToOutput;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -48,14 +48,15 @@ class Post extends AbstractController
     )]
     #[OA\Tag(name: 'User')]
     public function __invoke(
-        Request $request,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         #[MapRequestPayload]
         UserPost $userDto,
         UserPasswordHasherInterface $passwordHasher,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        UserOutput $userOutput,
+        TransferUserToOutput $transferUserToOutput,
     ): Response {
         $user = $serializer->deserialize(
             $serializer->serialize($userDto, 'json'),
@@ -77,11 +78,7 @@ class Post extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $userOutput = $serializer->deserialize(
-            $serializer->serialize($user, 'json'),
-            UserOutput::class,
-            'json'
-        );
+        $transferUserToOutput($user, $userOutput);
 
         $event = new UserCreatedEvent($user);
         $dispatcher->dispatch($event, UserCreatedEvent::NAME);

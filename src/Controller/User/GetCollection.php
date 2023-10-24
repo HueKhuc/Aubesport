@@ -9,10 +9,9 @@ use App\Dto\UserOutput;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use App\ObjectManipulation\TransferUserToOutput;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -34,8 +33,7 @@ class GetCollection extends AbstractController
     #[OA\Tag(name: 'User')]
     public function __invoke(
         EntityManagerInterface $entityManager,
-        SerializerInterface $serializer,
-        Request $request,
+        TransferUserToOutput $transferUserToOutput,
         #[MapQueryParameter]
         int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
         #[MapQueryParameter]
@@ -58,12 +56,8 @@ class GetCollection extends AbstractController
 
         $usersOutput = [];
         foreach ($users as $user) {
-            $userOutput = $serializer->deserialize(
-                $serializer->serialize($user, 'json'),
-                UserOutput::class,
-                'json'
-            );
-
+            $userOutput = new UserOutput();
+            $transferUserToOutput($user, $userOutput);
             $usersOutput[] = $userOutput;
         }
 
