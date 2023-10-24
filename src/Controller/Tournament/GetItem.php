@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Tournament;
 
-use App\Dto\TournamentOutput;
 use App\Entity\Tournament;
 use App\Exception\NotFound;
+use App\Dto\TournamentOutput;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\ObjectManipulation\TransferTournamentToOutput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GetItem extends AbstractController
@@ -38,6 +39,7 @@ class GetItem extends AbstractController
         string $uuid,
         EntityManagerInterface $entityManager,
         TournamentOutput $tournamentOutput,
+        TransferTournamentToOutput $transferTournamentToOutput
     ): Response {
         $tournament = $entityManager->getRepository(Tournament::class)->find($uuid);
 
@@ -45,13 +47,7 @@ class GetItem extends AbstractController
             throw new NotFound('Tournament not found');
         }
 
-        $tournamentOutput->uuid = $tournament->getUuid();
-        $tournamentOutput->name = $tournament->getName();
-        $tournamentOutput->startingDate = $tournament->getStartingDate();
-        $tournamentOutput->endingDate = $tournament->getEndingDate();
-        $tournamentOutput->createdAt = $tournament->getCreatedAt();
-        $tournamentOutput->modifiedAt = $tournament->getModifiedAt();
-        $tournamentOutput->deletedAt = $tournament->getDeletedAt();
+        $transferTournamentToOutput($tournament, $tournamentOutput);
 
         return $this->json($tournamentOutput, 200);
     }
