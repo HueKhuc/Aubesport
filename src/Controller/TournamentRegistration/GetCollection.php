@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\TournamentRegistration;
 
-use App\ObjectManipulation\TransferObject;
 use OpenApi\Attributes as OA;
 use App\Entity\TournamentRegistration;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\ObjectManipulation\TransferTournamentRegistrationToOutput;
 
 class GetCollection extends AbstractController
 {
@@ -34,7 +34,7 @@ class GetCollection extends AbstractController
     public function __invoke(
         TournamentRegistrationOutput $tournamentRegistrationOutput,
         EntityManagerInterface $entityManager,
-        TransferObject $transferDTO,
+        TransferTournamentRegistrationToOutput $transferTournamentRegistrationToOutput,
         #[MapQueryParameter]
         int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
         #[MapQueryParameter]
@@ -60,7 +60,7 @@ class GetCollection extends AbstractController
         foreach ($tournamentRegistrations as $tournamentRegistration) {
             $tournamentRegistrationOutput = new TournamentRegistrationOutput();
 
-            $transferDTO($tournamentRegistration, $tournamentRegistrationOutput);
+            $transferTournamentRegistrationToOutput($tournamentRegistration, $tournamentRegistrationOutput);
 
             $tournamentRegistrationsOutput[] = $tournamentRegistrationOutput;
         }
