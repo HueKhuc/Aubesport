@@ -32,17 +32,9 @@ class TournamentRegistrationRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $results = (array) $query->getResult();
-
-        // if (count($results) === 0) {
-        //     return [];
-        // }
-
-        // foreach ($results as $result) {
-        //     assert($result instanceof TournamentRegistration);
-        // }
+        /** @var TournamentRegistration[] $results */
+        $results = $query->getResult();
 
         return $results;
-
     }
 }

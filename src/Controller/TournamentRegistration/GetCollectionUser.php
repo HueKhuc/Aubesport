@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\TournamentRegistration;
 
-use App\Entity\TournamentRegistration;
 use App\Exception\NotFound;
-use App\ObjectManipulation\TransferObject;
+use App\ObjectManipulation\TransferTournamentRegistrationToOutput;
 use App\Repository\TournamentRegistrationRepository;
 use OpenApi\Attributes as OA;
 use App\Dto\TournamentRegistrationOutput;
@@ -31,7 +30,7 @@ class GetCollectionUser extends AbstractController
         string $uuid,
         TournamentRegistrationRepository $tournamentRegistrationRepository,
         TournamentRegistrationOutput $tournamentRegistrationOutput,
-        TransferObject $transferDTO,
+        TransferTournamentRegistrationToOutput $transferTournamentRegistrationToOutput,
     ): Response {
         $tournamentRegistrations = $tournamentRegistrationRepository->findByUserUuid($uuid);
 
@@ -42,10 +41,9 @@ class GetCollectionUser extends AbstractController
         $tournamentRegistrationsOutput = [];
 
         foreach ($tournamentRegistrations as $tournamentRegistration) {
-            // assert($tournamentRegistration instanceof TournamentRegistration);
             $tournamentRegistrationOutput = new TournamentRegistrationOutput();
 
-            $transferDTO($tournamentRegistration, $tournamentRegistrationOutput);
+            $transferTournamentRegistrationToOutput($tournamentRegistration, $tournamentRegistrationOutput);
 
             $tournamentRegistrationsOutput[] = $tournamentRegistrationOutput;
         }
