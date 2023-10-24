@@ -7,7 +7,7 @@ namespace App\ObjectManipulation;
 use App\Dto\TournamentRegistrationOutput;
 use App\Entity\TournamentRegistration;
 
-class TransferObject
+class TransferTournamentRegistrationToOutput
 {
     public function __invoke(TournamentRegistration $object, TournamentRegistrationOutput $objectDto): void
     {

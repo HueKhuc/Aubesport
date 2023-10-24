@@ -6,7 +6,7 @@ namespace App\Controller\TournamentRegistration;
 
 use App\Entity\TournamentRegistration;
 use App\Exception\NotFound;
-use App\ObjectManipulation\TransferObject;
+use App\ObjectManipulation\TransferTournamentRegistrationToOutput;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Dto\TournamentRegistrationOutput;
@@ -38,7 +38,7 @@ class GetItem extends AbstractController
     public function __invoke(
         string $uuid,
         EntityManagerInterface $entityManager,
-        TransferObject $transferObject,
+        TransferTournamentRegistrationToOutput $transferTournamentRegistrationToOutput,
         TournamentRegistrationOutput $tournamentRegistrationOutput
     ): Response {
         $tournamentRegistration = $entityManager->getRepository(TournamentRegistration::class)->find($uuid);
@@ -47,7 +47,7 @@ class GetItem extends AbstractController
             throw new NotFound('Tournament registration not found');
         }
 
-        $transferObject($tournamentRegistration, $tournamentRegistrationOutput);
+        $transferTournamentRegistrationToOutput($tournamentRegistration, $tournamentRegistrationOutput);
 
         return $this->json($tournamentRegistrationOutput, 200);
     }
