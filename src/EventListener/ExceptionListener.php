@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Exception\Conflict;
 use App\Exception\NotFound;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -33,6 +34,12 @@ class ExceptionListener
                 422,
                 json: true
             );
+        } elseif ($exception instanceof Conflict) {
+            $response = new JsonResponse(
+                ['message' => $exception->getMessage()],
+                409
+            );
+            $this->logger->error($exception->getMessage(), ['trace' => $exception->getTrace()]);
         } else {
             $code = ($exception instanceof NotFound) ? 404 : 500;
             $response = new JsonResponse(

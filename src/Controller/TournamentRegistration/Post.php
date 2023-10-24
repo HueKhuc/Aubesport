@@ -7,6 +7,7 @@ namespace App\Controller\TournamentRegistration;
 use App\Dto\TournamentRegistrationInput;
 use App\Entity\User;
 use App\Entity\Tournament;
+use App\Exception\Conflict;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
 use App\Entity\TournamentRegistration;
@@ -48,6 +49,17 @@ class Post extends AbstractController
 
         if ($tournament === null) {
             throw new NotFound('Tournament not found');
+        }
+
+        $tournamentRegistrations = $entityManager->getRepository(TournamentRegistration::class)->findAll();
+
+        foreach ($tournamentRegistrations as $tournamentRegistration) {
+            $registedUser = $tournamentRegistration->getUser();
+            $registedTournament = $tournamentRegistration->getTournament();
+
+            if ($user === $registedUser && $tournament === $registedTournament) {
+                throw new Conflict('You have already registered');
+            }
         }
 
         $tournamentRegistration = new TournamentRegistration();
