@@ -6,20 +6,16 @@ namespace App\Controller\Tournament;
 
 use App\Dto\TournamentOutput;
 use App\Entity\Tournament;
+use App\ObjectManipulation\TransferTournamentToOutput;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GetCollection extends AbstractController
 {
-    private const MAX_ELEMENTS_PER_PAGE = 50;
-
-    private const DEFAUT_ELEMENTS_PER_PAGE = 10;
-
     #[Route('/api/tournaments', methods: ['GET'])]
     #[OA\Response(
         response: 200,
@@ -32,52 +28,20 @@ class GetCollection extends AbstractController
     #[OA\Tag(name: 'Tournament')]
     public function __invoke(
         EntityManagerInterface $entityManager,
-        #[MapQueryParameter]
-        int $elementsPerPage = self::DEFAUT_ELEMENTS_PER_PAGE,
-        #[MapQueryParameter]
-        int $currentPage = 1
+        TransferTournamentToOutput $transferTournamentToOutput
     ): Response {
-        $elementsPerPage = ($elementsPerPage > self::MAX_ELEMENTS_PER_PAGE) ? self::DEFAUT_ELEMENTS_PER_PAGE : $elementsPerPage;
-
-        $numberOfTournaments = $entityManager->getRepository(Tournament::class)->count([]);
-
-        $totalOfPages = (int) ceil($numberOfTournaments / $elementsPerPage);
-
-        $offset = $elementsPerPage * ($currentPage - 1);
-
-        $tournaments = $entityManager->getRepository(Tournament::class)->findBy(
-            [],
-            ['createdAt' => 'DESC'],
-            $elementsPerPage,
-            $offset
-        );
+        $tournaments = $entityManager->getRepository(Tournament::class)->findAll();
 
         $tournamentsOutput = [];
+
         foreach ($tournaments as $tournament) {
             $tournamentOutput = new TournamentOutput();
 
-            $tournamentOutput->uuid = $tournament->getUuid();
-            $tournamentOutput->name = $tournament->getName();
-            $tournamentOutput->startingDate = $tournament->getStartingDate();
-            $tournamentOutput->endingDate = $tournament->getEndingDate();
-            $tournamentOutput->createdAt = $tournament->getCreatedAt();
-            $tournamentOutput->modifiedAt = $tournament->getModifiedAt();
-            $tournamentOutput->deletedAt = $tournament->getDeletedAt();
+            $transferTournamentToOutput($tournament, $tournamentOutput);
 
             $tournamentsOutput[] = $tournamentOutput;
         }
 
-        $nextPage = ($currentPage < $totalOfPages) ? $currentPage + 1 : null;
-
-        $previousPage = ($currentPage > 1) ? $currentPage - 1 : null;
-
-        return $this->json([
-            'elements' => $tournamentsOutput,
-            'totalOfPages' => $totalOfPages,
-            'currentPage' => $currentPage,
-            'elementsPerPage' => $elementsPerPage,
-            'nextPage' => $nextPage,
-            'previousPage' => $previousPage
-        ]);
+        return $this->json($tournamentsOutput, 200);
     }
 }
