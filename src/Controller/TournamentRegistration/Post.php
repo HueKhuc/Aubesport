@@ -13,10 +13,8 @@ use App\Entity\TournamentRegistration;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Dto\TournamentRegistrationOutput;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -25,7 +23,7 @@ class Post extends AbstractController
     #[Route('/api/tournament-registrations', methods: ['POST'])]
     #[OA\Response(
         response: 201,
-        description: 'Returns the information of an tournament registration',
+        description: 'Create a tournament registration',
         content: new OA\JsonContent(
             type: 'array',
             items: new OA\Items(ref: new Model(type: TournamentRegistrationOutput::class))
@@ -33,8 +31,6 @@ class Post extends AbstractController
     )]
     #[OA\Tag(name: 'TournamentRegistration')]
     public function __invoke(
-        Request $request,
-        SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
         #[MapRequestPayload]
         TournamentRegistrationInput $tournamentRegistrationInput,
