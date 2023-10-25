@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\TournamentRegistrationRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TournamentRegistrationRepository;
 
 #[ORM\Entity(repositoryClass: TournamentRegistrationRepository::class)]
 class TournamentRegistration
@@ -15,7 +15,7 @@ class TournamentRegistration
     #[ORM\Column]
     private string $uuid;
 
-    #[ORM\ManyToOne(inversedBy: 'tournamentRegistrations')]
+    #[ORM\ManyToOne(inversedBy: 'tournamentRegistrations', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private Tournament $tournament;
 
@@ -31,7 +31,7 @@ class TournamentRegistration
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tournamentRegistrations')]
+    #[ORM\ManyToOne(inversedBy: 'tournamentRegistrations', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(referencedColumnName: 'uuid', nullable: false)]
     private User $user;
 
