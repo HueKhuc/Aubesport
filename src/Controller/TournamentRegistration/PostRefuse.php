@@ -29,6 +29,14 @@ class PostRefuse extends AbstractController
             items: new OA\Items(ref: new Model(type: TournamentRegistrationOutput::class))
         )
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'Tournament registration or user not found'
+    )]
+    #[OA\Response(
+        response: 409,
+        description: 'Tournament registration has been accepted or refused'
+    )]
     #[OA\Tag(name: 'TournamentRegistration')]
     public function __invoke(
         string $uuid,
