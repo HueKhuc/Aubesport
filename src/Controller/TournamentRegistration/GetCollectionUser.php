@@ -25,6 +25,10 @@ class GetCollectionUser extends AbstractController
             items: new OA\Items(ref: new Model(type: TournamentRegistrationOutput::class))
         )
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'Tournament registration not found'
+    )]
     #[OA\Tag(name: 'Tournament Registration')]
     public function __invoke(
         string $uuid,
