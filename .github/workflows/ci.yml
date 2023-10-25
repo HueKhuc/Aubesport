@@ -30,7 +30,7 @@ jobs:
       run: bin/dev/phpcs-check
 
     - name: phpstan
-      run: bin/dev/phpstan analyse
+      run: bin/dev/phpstan analyse --memory-limit 1G
 
     - name: phpunit
       run: bin/dev/phpunit
