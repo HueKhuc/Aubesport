@@ -30,6 +30,14 @@ class Post extends AbstractController
             items: new OA\Items(ref: new Model(type: TournamentRegistrationOutput::class))
         )
     )]
+    #[OA\Response(
+        response: 404,
+        description: 'Tournament registration or user not found'
+    )]
+    #[OA\Response(
+        response: 409,
+        description: 'User has already registered'
+    )]
     #[OA\Tag(name: 'TournamentRegistration')]
     public function __invoke(
         EntityManagerInterface $entityManager,
