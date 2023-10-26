@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller\User;
 
-use App\Dto\UserOutput;
 use App\Entity\User;
 use App\Dto\UserPatch;
+use App\Dto\UserOutput;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
 use App\ObjectManipulation\UpdateObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use App\ObjectManipulation\TransferUserToOutput;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class Patch extends AbstractController
@@ -48,13 +46,12 @@ class Patch extends AbstractController
     #[OA\Tag(name: 'User')]
     public function __invoke(
         string $uuid,
-        Request $request,
-        SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
         #[MapRequestPayload]
         UserPatch $userDto,
-        UpdateObject $updateObject
+        UpdateObject $updateObject,
+        UserOutput $userOutput,
+        TransferUserToOutput $transferUserToOutput,
     ): Response {
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
@@ -67,11 +64,7 @@ class Patch extends AbstractController
 
         $entityManager->flush();
 
-        $userOutput = $serializer->deserialize(
-            $serializer->serialize($user, 'json'),
-            UserOutput::class,
-            'json'
-        );
+        $transferUserToOutput($user, $userOutput);
 
         return $this->json($userOutput, 200);
     }

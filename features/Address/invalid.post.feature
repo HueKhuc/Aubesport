@@ -16,4 +16,3 @@ Feature:
         """
         Then I should receive a status code 422
         And the node "detail" of the response should be "postalCode: Le code postal doit contenir exactement 5 chiffres."
-
