@@ -12,3 +12,10 @@ services:
         exclude:
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    App\Image\ImageUploader:
+        arguments:
+            $targetDirectory: '%brochures_directory%'
+
+parameters:
+    brochures_directory: '%kernel.project_dir%/asset/uploads/images'

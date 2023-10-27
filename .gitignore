@@ -26,3 +26,8 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+###> image ###
+/asset/images
+!/asset/images/.gitkeep
+###< image ###
