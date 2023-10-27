@@ -41,6 +41,7 @@ security:
         - { path: ^/api/tournament-registrations$, roles: ROLE_ADMIN, method: 'GET' }
         - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', roles: ROLE_USER, methods: ['GET','PATCH'] }
         - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', roles: ROLE_ADMIN, method: 'DELETE' }
+        - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/image$', roles: ROLE_USER, methods: ['GET','POST'] }
         - { path: ^/api/users$, roles: PUBLIC_ACCESS, method: 'POST' }
         - { path: ^/api/users, roles: ROLE_ADMIN, method: 'GET' }
     

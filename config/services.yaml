@@ -2,6 +2,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $targetDirectory: '%images_directory%'
 
     App\Controller\:
         resource: '../src/Controller/'
@@ -13,9 +15,5 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\Image\ImageUploader:
-        arguments:
-            $targetDirectory: '%brochures_directory%'
-
 parameters:
-    brochures_directory: '%kernel.project_dir%/asset/uploads/images'
+    images_directory: '%kernel.project_dir%/asset/images'
