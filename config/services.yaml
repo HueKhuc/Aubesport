@@ -2,6 +2,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $targetDirectory: '%images_directory%'
 
     App\Controller\:
         resource: '../src/Controller/'
@@ -12,3 +14,6 @@ services:
         exclude:
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+parameters:
+    images_directory: '%kernel.project_dir%/asset/images'
