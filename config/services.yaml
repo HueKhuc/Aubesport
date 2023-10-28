@@ -2,6 +2,10 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $targetDirectory: '%kernel.project_dir%/asset/images'
+            $adminEmail: '%env(ADMIN_EMAIL)%'
+            $noReplyEmail: '%env(NO_REPLY_EMAIL)%'
 
     App\Controller\:
         resource: '../src/Controller/'

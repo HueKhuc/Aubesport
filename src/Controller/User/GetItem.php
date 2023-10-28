@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\User;
 
-use App\Dto\UserOutput;
 use App\Entity\User;
+use App\Dto\UserOutput;
 use App\Exception\NotFound;
 use OpenApi\Attributes as OA;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\ObjectManipulation\TransferUserToOutput;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GetItem extends AbstractController
@@ -39,10 +37,9 @@ class GetItem extends AbstractController
     #[OA\Tag(name: 'User')]
     public function __invoke(
         string $uuid,
-        Request $request,
-        SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
+        UserOutput $userOutput,
+        TransferUserToOutput $transferUserToOutput,
     ): Response {
         $user = $entityManager->getRepository(User::class)->find($uuid);
 
@@ -50,11 +47,7 @@ class GetItem extends AbstractController
             throw new NotFound('User not found');
         }
 
-        $userOutput = $serializer->deserialize(
-            $serializer->serialize($user, 'json'),
-            UserOutput::class,
-            'json'
-        );
+        $transferUserToOutput($user, $userOutput);
 
         return $this->json($userOutput, 200);
     }

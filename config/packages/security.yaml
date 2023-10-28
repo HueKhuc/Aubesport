@@ -30,11 +30,24 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api/login$, roles: PUBLIC_ACCESS }
+        - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/address$', roles: ROLE_USER, methods: ['GET','PATCH','POST'] }
+        - { path: ^/api/tournaments$, roles: ROLE_USER, method: 'GET' }
+        - { path: '^\/api\/tournaments\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', roles: ROLE_USER, method: 'GET' }
+        - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/tournament-registrations$', roles: ROLE_USER, method: 'GET' }
+        - { path: ^/api/tournament-registrations$, roles: ROLE_USER, method: 'POST' }
+        - { path: '^\/api\/tournament-registrations\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/(accept|refuse)$', roles: ROLE_ADMIN, method: 'POST' }
+        - { path: '^\/api\/tournament-registrations\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', roles: ROLE_ADMIN, method: 'GET' }
+        - { path: ^/api/tournament-registrations$, roles: ROLE_ADMIN, method: 'GET' }
+        - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', roles: ROLE_USER, methods: ['GET','PATCH'] }
+        - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', roles: ROLE_ADMIN, method: 'DELETE' }
+        - { path: '^\/api\/users\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/image$', roles: ROLE_USER, methods: ['GET','POST'] }
         - { path: ^/api/users$, roles: PUBLIC_ACCESS, method: 'POST' }
         - { path: ^/api/users, roles: ROLE_ADMIN, method: 'GET' }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+    
+    role_hierarchy:
+        ROLE_PLAYER: ROLE_USER
+        ROLE_ADMIN: ROLE_PLAYER
 
 when@test:
     security:
