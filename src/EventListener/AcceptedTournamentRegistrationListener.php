@@ -17,7 +17,7 @@ class AcceptedTournamentRegistrationListener
         private readonly MailerInterface $mailer,
         private Environment $twig,
         private string $adminEmail,
-        private string $noreplyEmail
+        private string $noReplyEmail
     ) {
     }
 

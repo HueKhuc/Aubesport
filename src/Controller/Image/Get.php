@@ -33,14 +33,14 @@ class Get extends AbstractController
         if (count($results) === 0) {
             throw new NotFound('Image not found');
         }
-        
-        if(file_get_contents($results[0]) === false) {
+
+        if (file_get_contents($results[0]) === false) {
             throw new NotFound('Image not found');
         }
 
         $explodedPath = explode('/', $results[0]);
         $filename = end($explodedPath);
-        
+
         $response = new Response();
         $response->headers->set('Content-Type', 'image/jpeg');
         $response->headers->set('Content-Disposition', 'inline; filename="' . $filename . '"');
