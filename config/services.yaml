@@ -5,7 +5,7 @@ services:
         bind:
             $targetDirectory: '%kernel.project_dir%/asset/images'
             $adminEmail: '%env(ADMIN_EMAIL)%'
-            $noReplyEmail: '%env(NORENO_REPLY_EMAILPLY_EMAIL)%'
+            $noReplyEmail: '%env(NO_REPLY_EMAIL)%'
 
     App\Controller\:
         resource: '../src/Controller/'
