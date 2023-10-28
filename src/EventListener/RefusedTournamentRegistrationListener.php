@@ -27,7 +27,7 @@ class RefusedTournamentRegistrationListener
         $user = $tournamentRegistration->getUser();
 
         $email = (new Email())
-            ->from($this->noreplyEmail)
+            ->from($this->noReplyEmail)
             ->to($user->getEmail())
             ->cc($this->adminEmail)
             ->subject("Inscription refusée")
