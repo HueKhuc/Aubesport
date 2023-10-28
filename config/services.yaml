@@ -3,7 +3,9 @@ services:
         autowire: true
         autoconfigure: true
         bind:
-            $targetDirectory: '%images_directory%'
+            $targetDirectory: '%kernel.project_dir%/asset/images'
+            $adminEmail: '%env(ADMIN_EMAIL)%'
+            $noreplyEmail: '%env(NOREPLY_EMAIL)%'
 
     App\Controller\:
         resource: '../src/Controller/'
@@ -14,6 +16,3 @@ services:
         exclude:
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-parameters:
-    images_directory: '%kernel.project_dir%/asset/images'

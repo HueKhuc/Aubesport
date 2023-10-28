@@ -15,7 +15,9 @@ class RefusedTournamentRegistrationListener
 {
     public function __construct(
         private readonly MailerInterface $mailer,
-        private Environment $twig
+        private Environment $twig,
+        private string $adminEmail,
+        private string $noreplyEmail
     ) {
     }
 
@@ -25,9 +27,9 @@ class RefusedTournamentRegistrationListener
         $user = $tournamentRegistration->getUser();
 
         $email = (new Email())
-            ->from('noreply@aubesport.fr')
+            ->from($this->noreplyEmail)
             ->to($user->getEmail())
-            ->cc('admin@aubesport.fr')
+            ->cc($this->adminEmail)
             ->subject("Inscription refusée")
             ->html($this->twig->render('refused.tournament.registration.confirmation.mail.twig', [
                 'email' => $user->getEmail(),
